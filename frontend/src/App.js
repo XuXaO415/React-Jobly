@@ -20,6 +20,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [infoLoaded, setInfoLoaded] = useState(false);
 
+  console.debug("App", "infoLoaded", infoLoaded, "currentUser", currentUser, "token", token);
+
   // useEffect to get the token from local storage
   useEffect(() => {
     async function getCurrentUser() {
@@ -64,15 +66,19 @@ function App() {
   }
 
   //TODO: Create function to login user
-
-
-
-
-
-
-    
-
-
+  async function login(user) {
+    try {
+      // login the user using the API
+      const loggedInUser = await JoblyApi.login(user);
+      // set the token to the token we got from the API
+      setToken(loggedInUser.token);
+      // set the current user to the user we got from the API
+      setCurrentUser(loggedInUser.user);
+    }
+    catch(err) {
+      console.error("There was a problem logging in", err);
+    }
 }
+
 
 export default App;
