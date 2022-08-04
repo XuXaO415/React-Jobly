@@ -1,84 +1,97 @@
 // import ReactHierarchy from "./React-Jobly-Hierarchy-Design";
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "./Nav/NavBar";
-import { Routes } from "react-router-dom";
-import { UserContext } from "./Users/UserContext";
-import { Jwt } from "jsonwebtoken";
+import Routes from "./Routes";
+import  UserContext  from "./Users/UserContext";
+import jwt  from "jsonwebtoken";
 import JoblyApi from "./JoblyApi";
 import useLocalStorage from "./hooks/useLocalStorage";
 
- // key name for local storing the token in local storage
-  const TOKEN_KEY = "jobly-token";
-  
-  // useLocalStorage hook to get the token from local storage
-  // const [token, setToken] = useLocalStorage(TOKEN_KEY);
 
+
+// token key name  for storing token in local storage
+export const TOKEN_KEY = "jobly-token";
 
 function App() {
-  const [token, setToken] = useLocalStorage(TOKEN_KEY);
   const [currentUser, setCurrentUser] = useState(null);
-  const [infoLoaded, setInfoLoaded] = useState(false);
+  const [token, setToken] = useLocalStorage(TOKEN_KEY);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  console.debug("App", "infoLoaded", infoLoaded, "currentUser", currentUser, "token", token);
 
-  // useEffect to get the token from local storage
   useEffect(() => {
     async function getCurrentUser() {
       if(token) {
         try {
-          // get the current user from the API using the token from local storage as the authorization token  
-          //MOTE: (this is the same token we used to login)
-          const user = await JoblyApi.getCurrentUser(Jwt.decode(token).sub);
-          // set the current user to the user we got from the API
+          const user = await JoblyApi.getUser(token);
           setCurrentUser(user);
-        }
-        catch(err) {
-          console.error("There was a problem loading the current user", err);
-          // if there is an error, clear the token from local storage
-          setToken(null);
+          setIsLoggedIn(true);
+        } catch (err) {
+          console.error("An error occurred while getting the current user:", err);
         }
       }
-      // set the infoLoaded to true to indicate that the info has been loaded
-      setInfoLoaded(true);
     }
     getCurrentUser();
-  }, [setToken, token]);
-
-  // if the info has not been loaded, show a loading message
-  if(!infoLoaded) {
-    return <div>Loading...</div>;
   }
+  , [token]);
 
-  //TODO: Create function to signup user
-  async function signup(user) {
+  async function loginUser(user) {
     try {
-      // signup the user using the API
-      const newUser = await JoblyApi.signup(user);
-      // set the token to the token we got from the API
-      setToken(newUser.token);
-      // set the current user to the user we got from the API
-      setCurrentUser(newUser.user);
-    }
-    catch(err) {
-      console.error("There was a problem signing up", err);
+      const token = await JoblyApi.login(user);
+      setToken(token);
+      setIsLoggedIn(true);
+    } catch (err) {
+      console.error("An error occurred while logging in:", err);
     }
   }
 
-  //TODO: Create function to login user
-  async function login(user) {
+  async function signupUser(user) {
     try {
-      // login the user using the API
-      const loggedInUser = await JoblyApi.login(user);
-      // set the token to the token we got from the API
-      setToken(loggedInUser.token);
-      // set the current user to the user we got from the API
-      setCurrentUser(loggedInUser.user);
+      const token = await JoblyApi.signup(user);
+      setToken(token);
+      setIsLoggedIn(true);
+    } catch (err) {
+      console.error("An error occurred while signing up:", err);
     }
-    catch(err) {
-      console.error("There was a problem logging in", err);
+  }
+  
+  async function logoutUser() {
+    try {
+      await JoblyApi.logout(token);
+      setToken(null);
+      setIsLoggedIn(false);
+    } catch (err) {
+      console.error("An error occurred while logging out:", err);
     }
+  }
+
+  return (
+    <UserContext.Provider value={{ currentUser, loginUser, signupUser, logoutUser, isLoggedIn }}>
+      <Router>
+        <NavBar />
+        <Routes />
+      </Router>
+    </UserContext.Provider>
+  );
 }
 
 
+
+
+
+
+
+
+
+//         const user = await JoblyApi.getCurrentUser(token);
+//         setCurrentUser(user);
+//         setIsLoggedIn(true);
+//       }
+// }
+//     getCurrentUser();
+//   }, [token]);
+// }
+
+
 export default App;
+

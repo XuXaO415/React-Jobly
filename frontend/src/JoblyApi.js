@@ -47,9 +47,18 @@ class JoblyApi {
         return res.user;
     }
 
-    //TODO: Create function to signup user
+    //DONE: Create function to signup new user
+    static async signup(user) {
+        let res = await this.request(`auth/register`, user, "post");
+        return res.token;
+    }
 
     //TODO: Create function to login user
+    static async login(username, password) {
+        let res = await this.request(`auth/login`, { username, password }, "post");
+        return res.token;
+    }
+
 
 
 
@@ -73,3 +82,5 @@ class JoblyApi {
 JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
     "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
     "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+
+export default JoblyApi;

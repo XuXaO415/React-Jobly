@@ -6,3 +6,6 @@ import React from 'react';
 const UserContext = React.createContext();
 
 export default UserContext;
+
+// https://www.freecodecamp.org/news/react-context-for-beginners/
+//https://morioh.com/p/029ca3ba700b

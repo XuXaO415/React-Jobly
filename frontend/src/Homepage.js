@@ -1,6 +1,6 @@
 import React, {useContext} from "react"; //useContext is a hook that allows us to access the context object
 import { Link } from "react-router-dom"; //Link is a component that allows us to link to other pages
-import { UserContext } from "./Users/UserContext"; //UserContext is a context object that allows us to access the user object in my App.js file
+import  UserContext from "./Users/UserContext"; //UserContext is a context object that allows us to access the user object in my App.js file
 
 
 
