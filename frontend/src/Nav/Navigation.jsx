@@ -1,44 +1,70 @@
-import React, { useState, useEffect, useContext } from "react";
-import {Link, NavLink } from "react-router-dom";
+import * as React from "react";
+import * as ReactRouterDOM from "react-router-dom";
+import * as ReactDOM from "react-dom";
+import useContext from "react";
+import { NavLink, Link } from "react-router-dom";
 import UserContext from "../Users/UserContext";
+import { Navbar, Nav, NavItem } from "reactstrap";
 
-function Navigation() {
-    const { currentUser } = useContext(UserContext);
 
-    function logout() {
-        localStorage.removeItem("jobly-token");
-        window.location.reload();
-    }
 
-    function login() {
-        window.location.href = "/login";
-    }
 
-    function signup() {
-        window.location.href = "/signup";
-    }
+function Navigation({ logout }) {
+  const { currentUser } = useContext(UserContext);
+  console.debug("Navigation", "currentUser=", currentUser);
 
+  function loggedInNav() {
     return (
-        <div className="Navigation">
-            <NavLink to="/">
-            </NavLink>
-            <NavLink to="/companies">Companies</NavLink>
-            <NavLink to="/jobs">Jobs</NavLink>
-            {currentUser ? (
-                <div className="Navigation-user">
-                    <NavLink to="/profile">Profile</NavLink>
-                    <button onClick={logout}>Logout</button>
-                </div>
-            ) : (
-                <div className="Navigation-user">
-                    <button onClick={login}>Login</button>
-                    <button onClick={signup}>Sign up</button>
-                </div>
-            )}
-        </div>
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/companies">
+            Companies
+          </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/jobs">
+            Jobs
+          </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/profile">
+            Profile
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/" onClick={logout}>
+            Log out {currentUser.first_name || currentUser.username}
+          </Link>
+        </li>
+      </ul>
     );
-}
-    
+  }
 
+  function loggedOutNav() {
+    return (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/login">
+            Login
+          </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/signup">
+            Sign Up
+          </NavLink>
+        </li>
+      </ul>
+    );
+  }
+
+  return (
+    <nav className="Navigation navbar navbar-expand-md">
+      <Link className="navbar-brand" to="/">
+        Jobly
+      </Link>
+      {currentUser ? loggedInNav() : loggedOutNav()}
+    </nav>
+  );
+}
 
 export default Navigation;

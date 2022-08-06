@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import JoblyApi from "../JoblyApi";
 import JobCardList from "../Jobs/JobCardList";
-import { Card, CardColumns, CardSubtitle, CardBody, CardTitle, CardText, Container, Row } from "reactstrap";
+import { Card, CardSubtitle, CardTitle, CardText, Container, Row } from "reactstrap";
 
 const CompanyDetail = (props) => {
     const [company, setCompany] = useState(null);
