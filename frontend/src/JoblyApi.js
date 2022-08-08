@@ -20,12 +20,20 @@ class JoblyApi {
         //there are multiple ways to pass an authorization token, this is how you pass it in the header.
         //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
         const url = `${BASE_URL}/${endpoint}`;
-        const headers = { Authorization: `Bearer ${JoblyApi.token}` };
+        const headers = {
+            Authorization: `Bearer ${JoblyApi.token}`
+        };
         const params = (method === "get") ?
             data : {};
 
         try {
-            return (await axios({ url, method, data, params, headers })).data;
+            return (await axios({
+                url,
+                method,
+                data,
+                params,
+                headers
+            })).data;
         } catch (err) {
             console.error("API Error:", err.response);
             let message = err.response.data.error.message;
@@ -47,14 +55,14 @@ class JoblyApi {
     }
 
     //DONE: Create function to signup new user
-    static async signup(user) {
-        let res = await this.request(`auth/register`, user, "post");
+    static async signup(data) {
+        let res = await this.request(`auth/register`, data, "post");
         return res.token;
     }
 
     //TODO: Create function to login user
-    static async login(username, password) {
-        let res = await this.request(`auth/login`, { username, password }, "post");
+    static async login(data) {
+        let res = await this.request(`auth/login`, data, "post");
         return res.token;
     }
 
@@ -64,11 +72,12 @@ class JoblyApi {
     /** Get all companies */
     //TODO: Create function to get all companies
 
-    //TODO: Create function to get company details
+
 
     //TODO: Create function to get a list of all companies
     /** Get details on a company by handle. */
 
+    //DONE: Create function to get company details
     static async getCompany(handle) {
         let res = await this.request(`companies/${handle}`);
         return res.company;
