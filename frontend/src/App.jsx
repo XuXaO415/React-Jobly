@@ -1,85 +1,86 @@
-import React, { useState, useEffect } from "react";
+import React,{useState,useEffect} from "react";
 import JoblyApi from "./JoblyApi";
 import useLocalStorage from "./hooks/useLocalStorage";
-import { BrowserRouter } from "react-router-dom";
-import Navigation from "./Nav/Navigation"
+import {BrowserRouter} from "react-router-dom";
+import Navigation from "./Nav/Navigation";
 import Routes from "./Nav/Routes";
 import UserContext from "./Users/UserContext";
 import jwt from "jsonwebtoken";
 
 // Key name for storing the token in local storage
-const TOKEN_KEY = "jobly-token";
-
+export const TOKEN_STORAGE_KEY="jobly-token";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [token, setToken] = useLocalStorage(TOKEN_KEY);
+    const [token,setToken] = useLocalStorage(TOKEN_STORAGE_KEY);
+    const [currentUser, setCurrentUser]=useState(null);
 
-    useEffect(() => {
+    console.debug("App rendered=", Boolean, "token=", token, 
+    "currentUser=", currentUser);
+
+    // Check if there is a token in local storage
+    useEffect(()=>{
         async function getCurrentUser() {
-            if (token) {
+            if(token){
                 try {
-                    const user = jwt.decode(token);
-                    JoblyApi.setToken(token);
-                    const currentUser = await JoblyApi.getCurrentUser(user.username);
+                    const { username } = jwt.decode(token);
+                    JoblyApi.token = token;
+                    const currentUser = await JoblyApi.getCurrentUser(username, token);
                     setCurrentUser(currentUser);
                 } catch (err) {
+                    console.error(err);
                     setCurrentUser(null);
                 }
             }
         }
         getCurrentUser();
-    }, [token]);
+        }, [token]);
 
-    function logout() {
-        setToken(null);
-        setCurrentUser(null);
-    }
-
-    async function login(username, password) {
-        try {
-            const user = await JoblyApi.login(username, password);
-            setToken(user.token);
+    // Logout the current user by clearing the token and current user and redirecting to the homepage
+    async function logout(data) {
+        console.debug("logout success=", data);
+        try{
+            await JoblyApi.logout(data);
+            setToken(null);
+            setCurrentUser(null);
             return { success: true };
-        } catch (err) {
-            return { success: false, message: err.message };
+        } catch(err){
+            console.error("Sign up failed", err);
+            return { success : false, message : err.message };
         }
     }
 
-    async function signup(username, password, firstName, lastName, email) {
+    // Login the user and store the token in local storage a
+    async function login(data) {
+        const { username, password } = data;
         try {
-            const user = await JoblyApi.signup(username, password, firstName, lastName, email);
-            setToken(user.token);
+            const { token } = await JoblyApi.login(username, password);
+            setToken(token);
             return { success: true };
         } catch (err) {
-            return { success: false, message: err.message };
+            console.error("Login failed", err);
+            return { success : false, message : err.message };
         }
     }
 
-    async function updateUser(username, password, firstName, lastName, email) {
+    // Signup the user and store the token in local storage
+    async function signup(data) {
         try {
-            const user = await JoblyApi.updateUser(username, password, firstName, lastName, email);
-            setCurrentUser(user);
+            const { token } = await JoblyApi.signup(data);
+            setToken(token);
             return { success: true };
         } catch (err) {
-            return { success: false, message: err.message };
+            console.error("Signup failed", err);
+            return { success : false, message : err.message };
         }
     }
     return (
         <BrowserRouter>
-            <UserContext.Provider value={{ currentUser, login, signup, updateUser, logout }}>
-                <Navigation />
-                <Routes />
+        <UserContext.Provider value={{ currentUser, login, logout, signup }}>
+            <Navigation login={login} />
+            <Routes login={login} signup={signup} />
             </UserContext.Provider>
         </BrowserRouter>
     );
 }
 
-
-
-
-
-
-
-
-    export default App;
+export default App;
