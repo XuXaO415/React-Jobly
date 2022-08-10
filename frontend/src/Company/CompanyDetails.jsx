@@ -3,46 +3,37 @@ import JoblyApi from "../JoblyApi";
 import JobCardList from "../Jobs/JobCardList";
 import { Card, CardSubtitle, CardTitle, CardText, Container, Row } from "reactstrap";
 
-const CompanyDetail = (props) => {
+function CompanyDetail() {
     const [company, setCompany] = useState(null);
-    const [error, setError] = useState(null);
+    const [jobs, setJobs] = useState(null);
 
     useEffect(() => {
         async function getCompany() {
-            try {
-                const company = await JoblyApi.getCompany(props.match.params.handle);
-                setCompany(company);
-            } catch (err) {
-                setError(err);
-            }
+            const { handle } = await JoblyApi.getCurrentUser();
+            const company = await JoblyApi.getCompany(handle);
+            setCompany(company);
         }
         getCompany();
-    }
-    , [props.match.params.handle]);
-
-    if (error) {
-        return <p>Error: {error.message}</p>;
+    }, []);
+    if (!company) {
+        return <h1>Loading...</h1>;
     }
 
     return (
-        <div>
-            <Container>
-                <Row>
-                    <Card body>
-                        <CardTitle>{company.name}</CardTitle>
-                        <CardSubtitle>{company.handle}</CardSubtitle>
-                        <CardText>{company.description}</CardText>
-                    </Card>
-                </Row>
-            </Container>
-            <Container>
-                <Row>
-                    <JobCardList jobs={company.jobs} />
-                </Row>
-            </Container>
-        </div>
+        <Container>
+            <Row>
+                <Card body inverse color="info">
+                    <CardTitle>{company.name}</CardTitle>
+                    <CardSubtitle>{company.handle}</CardSubtitle>
+                    <CardText>{company.description}</CardText>
+                </Card>
+            </Row>
+            <Row>
+                <JobCardList jobs={jobs} />
+            </Row>
+        </Container>
     );
-}
 
+}
 
 export default CompanyDetail;

@@ -3,34 +3,34 @@ import JoblyApi from "../JoblyApi";
 import CompanyCard from "../Company/CompanyCard";
 
 
-
-
-
-function CompanyList(props) {
-    const [companies, setCompanies] = useState([]);
-    const [error, setError] = useState(null);
+function CompanyList() {
+    const [companies, setCompanies] = useState(null);
+    console.debug("CompanyList", "companies=", companies);
 
     useEffect(() => {
-        async function getCompanies() {
-            try {
-                const companies = await JoblyApi.getCompanies();
-                setCompanies(companies);
-            } catch (err) {
-                setError(err);
-            }
+        async function getCompany() {
+            const companies = await JoblyApi.getCompany();
+            setCompanies(companies);
         }
-        getCompanies();
+        getCompany();
     }, []);
 
-    if (error) {
-        return <p>Error: {error.message}</p>;
-    }
-
     return (
-        <div className="row">
-            {companies.map(company => (
-                <CompanyCard key={company.handle} company={company} />
-            ))}
+        <div className="CompanyList">
+            <h1>Companies</h1>
+            <div className="container">
+                <div className="row">
+                    {companies.map(company => (
+                        <CompanyCard
+                        key={company.handle} 
+                        name={company.name}
+                        description={company.description}
+                        handle={company.handle}
+                        logoUrl={company.logoUrl}
+                        />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
