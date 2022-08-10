@@ -60,24 +60,32 @@ class JoblyApi {
         return res.token;
     }
 
-    //TODO: Create function to login user
+    //DONE: Create function to login user
     static async login(data) {
         let res = await this.request(`auth/login`, data, "post");
         return res.token;
     }
 
+    //DONE: Create function that updates a users profile
+    // static async updateUser(username, data) {
+    //     let res = await this.request(`users/${username}`, data, "patch");
+    //     return res.user;
+    // }
 
+    static async updateUser(username, data) {
+        try {
+            let res = await this.request(`users/${username}`, data, "patch");
+            return res.user;
+        } catch (err) {
+            console.error("API Error:", err.response);
+            let message = err.response.data.error.message;
+            throw Array.isArray(message) ? message : [message];
+        }
+    }
 
-
-    /** Get all companies */
-    //TODO: Create function to get all companies
-
-
-
-    //TODO: Create function to get a list of all companies
     /** Get details on a company by handle. */
 
-    //DONE: Create function to get company details
+    //DONE: Create function to get company details by handle
     static async getCompany(handle) {
         let res = await this.request(`companies/${handle}`);
         return res.company;
