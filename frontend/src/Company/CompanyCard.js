@@ -1,38 +1,39 @@
-import React from "react";
-import {
-    Link
-} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import JoblyApi from "../JoblyApi";
+import { Link } from "react-router-dom";
 
+function CompanyCard() {
+    const [companies, setCompanies] = useState(null);
+    console.debug("CompanyCard", "companies=", companies);
 
-function CompanyCard({name, description, handle, logoUrl}) {
+    useEffect(() => {
+        async function getCompany() {
+            const companies = await JoblyApi.getCompany();
+            setCompanies(companies);
+        }
+        getCompany();
+    }
+    , []);
+
     return (
-        <div className="card">
-            <div className="card-content">
-                <div className="media">
-                    <div className="media-left">
-                        <figure className="image is-48x48">
-                            <img src={logoUrl} alt="Company logo"/>
-                        </figure>
+        <div className="CompanyCard">
+        <Link to={`/companies/${companies.handle}`}>
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-4">
+                        <img src={companies.logo_url} alt={companies.name} />
                     </div>
-                    <div className="media-content">
-                        <p className="title is-4">{name}</p>
-                        <p className="subtitle is-6">{handle}</p>
+                    <div className="col-md-8">
+                        <h2>{companies.name}</h2>
+                        <p>{companies.description}</p>
                     </div>
-                </div>
-                <div className="content">
-                    {description}
                 </div>
             </div>
-            <footer className="card-footer">
-                <Link to={`/company/${handle}`} className="card-footer-item">
-                    View
-                </Link>
-                <Link to={`/company/${handle}/edit`} className="card-footer-item">
-                    Edit
-                </Link>
-            </footer>
-        </div>
+        </Link>
+        </div>  
     );
 }
+
+
 
     export default CompanyCard;

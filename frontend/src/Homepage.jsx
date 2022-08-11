@@ -13,10 +13,10 @@ function Homepage() {
                 <div className="container text-center">
                     <h1>Jobly</h1>
                     <p className="lead">Find your dream job</p>
-                    <div>
+                    {/* <div>
                         <Link to="/login" className="btn btn-primary">Login</Link>
                         <Link to="/signup" className="btn btn-secondary">Signup</Link>
-                    </div>
+                    </div> */}
                 </div>
                 </div>
         );

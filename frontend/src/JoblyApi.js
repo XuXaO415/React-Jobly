@@ -44,9 +44,11 @@ class JoblyApi {
     // Individual API routes
 
     /** Jobs */
-    //TODO: Create function to get all jobs
+
 
     //TODO: Create function that lists all jobs
+
+    /** User */
 
     /** Get current user */
     static async getCurrentUser(username) {
@@ -55,43 +57,68 @@ class JoblyApi {
     }
 
     //DONE: Create function to signup new user
-    static async signup(data) {
-        let res = await this.request(`auth/register`, data, "post");
+    static async signup(user) {
+        let res = await this.request(`auth/register`, user, "post");
         return res.token;
     }
 
     //DONE: Create function to login user
-    static async login(data) {
-        let res = await this.request(`auth/login`, data, "post");
+    static async login(user) {
+        let res = await this.request(`auth/login`, user, "post");
         return res.token;
     }
 
-    //DONE: Create function that updates a users profile
-    // static async updateUser(username, data) {
-    //     let res = await this.request(`users/${username}`, data, "patch");
-    //     return res.user;
+    //login user
+    // static async login(username, password) {
+    //     let res = await this.request(`auth/login`, {
+    //         username,
+    //         password
+    //     }, "post");
+    //     return res.token;
     // }
 
+
+
+    //DONE: Create function that updates a users profile
     static async updateUser(username, data) {
-        try {
-            let res = await this.request(`users/${username}`, data, "patch");
-            return res.user;
-        } catch (err) {
-            console.error("API Error:", err.response);
-            let message = err.response.data.error.message;
-            throw Array.isArray(message) ? message : [message];
-        }
+        let res = await this.request(`users/${username}`, data, "patch");
+        return res.user;
     }
 
+    // static async updateUser(username, data) {
+    //     try {
+    //         let res = await this.request(`users/${username}`, data, "patch");
+    //         return res.user;
+    //     } catch (err) {
+    //         console.error("API Error:", err.response);
+    //         let message = err.response.data.error.message;
+    //         throw Array.isArray(message) ? message : [message];
+    //     }
+    // }
+    /** Company */
     /** Get details on a company by handle. */
 
     //DONE: Create function to get company details by handle
     static async getCompany(handle) {
         let res = await this.request(`companies/${handle}`);
+        console.log(res.data, handle);
         return res.company;
     }
 
-    // obviously, you'll add a lot here ...
+    static async getCompanies(name) {
+        let res = await this.request(`companies`, {
+            name
+        });
+        return res.companies;
+    }
+
+    //DONE: Create function to get all companies
+    // static async getAllCompanies(data = {}) {
+    //     let res = await this.request(`companies`, data);
+    //     return res.companies;
+    // }
+
+
 }
 
 // for now, put token ("testuser" / "password" on class)
