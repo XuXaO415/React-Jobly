@@ -11,79 +11,119 @@ import axios from "axios";
 
 
 // Key name for storing the token in local storage
-// export const TOKEN_STORAGE_ID = "jobly-token";
+export const TOKEN_STORAGE_ID = "jobly-token";
+
 
 function App() {
-    // const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
-    const [token, setToken] = useLocalStorage("token", null);
-    const [currentUser, setCurrentUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
-  console.debug(
-      "App",
-      "currentUser=", currentUser,
-      "token=", token,
-        "isLoading=", isLoading
-  );
+    const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
+    const [user, setCurrentUser] = useState(null);
+    const [data, setData] = useState(false);
 
-  useEffect(function loadUserInfo() {
-    console.debug("App", "loadUserInfo", "token=", token);
-  });
-
-    async function handleLogin(user) {
-        if(!user.username || !user.password) {
-            return Promise.reject("username and password are required");
+    useEffect(() => { 
+        async function getUser() {
+            try {
+                const { username } = jwt.decode(token);
+                const user = await JoblyApi.getCurrentUser(username);
+                setCurrentUser(user);
+            } catch (err) {
+                setCurrentUser(null);
         }
-        setIsLoading(true);
-        try {
-            const { data } = await axios.post("/login", user);
-            setToken(data.token);
-            setCurrentUser(data.user);
-        } catch (err) {
-            console.error("App", "handleLogin", "err=", err);
-            return Promise.reject(err.response.data.error);
-        } finally {
-            setIsLoading(false);
-        }
+        setData(true);
     }
+    setData(false);
+    getUser();
+    }, [token]);
 
-    async function handleSignup(user) {
-        if(!user.username || !user.password) {
-            return Promise.reject("username and password are required");
-        }
-        setIsLoading(true);
-        try {
-            const { data } = await axios.post("/users", user);
-            setToken(data.token);
-            setCurrentUser(data.user);
-        } catch (err) {
-            console.error("App", "handleSignup", "err=", err);
-            return Promise.reject(err.response.data.error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    async function handleLogout() {
+    const logout = () => {
         setToken(null);
         setCurrentUser(null);
+    };
+
+    const login = async (username, password) => {
+        try {
+            const { token } = await JoblyApi.login(username, password);
+            setToken(token);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
-    return (
-        <BrowserRouter>
-            <UserContext.Provider value={{
-                currentUser,
-                isLoading,
-                handleLogin,
-                handleSignup,
-                handleLogout
-            }}>
-                <Navigation />
-                <Routes />
-            </UserContext.Provider>
-        </BrowserRouter>
-    );
+
+
 }
+
+// function App() {
+//     // const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
+//     const [token, setToken] = useLocalStorage("token", null);
+//     const [currentUser, setCurrentUser] = useState(null);
+//     const [isLoading, setIsLoading] = useState(false);
+
+//   console.debug(
+//       "App",
+//       "currentUser=", currentUser,
+//       "token=", token,
+//         "isLoading=", isLoading
+//   );
+
+//   useEffect(function loadUserInfo() {
+//     console.debug("App", "loadUserInfo", "token=", token);
+//   });
+
+//     async function handleLogin(user) {
+//         if(!user.username || !user.password) {
+//             return Promise.reject("username and password are required");
+//         }
+//         setIsLoading(true);
+//         try {
+//             const { data } = await axios.post("/login", user);
+//             setToken(data.token);
+//             setCurrentUser(data.user);
+//         } catch (err) {
+//             console.error("App", "handleLogin", "err=", err);
+//             return Promise.reject(err.response.data.error);
+//         } finally {
+//             setIsLoading(false);
+//         }
+//     }
+
+//     async function handleSignup(user) {
+//         if(!user.username || !user.password) {
+//             return Promise.reject("username and password are required");
+//         }
+//         setIsLoading(true);
+//         try {
+//             const { data } = await axios.post("/users", user);
+//             setToken(data.token);
+//             setCurrentUser(data.user);
+//         } catch (err) {
+//             console.error("App", "handleSignup", "err=", err);
+//             return Promise.reject(err.response.data.error);
+//         } finally {
+//             setIsLoading(false);
+//         }
+//     }
+
+//     async function handleLogout() {
+//         setToken(null);
+//         setCurrentUser(null);
+//     }
+
+//     return (
+//         <BrowserRouter>
+//             <UserContext.Provider value={{
+//                 currentUser,
+//                 isLoading,
+//                 handleLogin,
+//                 handleSignup,
+//                 handleLogout
+//             }}>
+//                 <Navigation />
+//                 <Routes />
+//             </UserContext.Provider>
+//         </BrowserRouter>
+//     );
+// }
 
 
 
