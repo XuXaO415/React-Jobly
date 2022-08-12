@@ -44,9 +44,11 @@ class JoblyApi {
     // Individual API routes
 
     /** Jobs */
-
-
-    //TODO: Create function that lists all jobs
+    //TODO: Create a functions that lists all jobs
+    static async getJobs() {
+        return await this.request("jobs");
+    }
+    
 
     /** User */
 
@@ -57,66 +59,51 @@ class JoblyApi {
     }
 
     //DONE: Create function to signup new user
-    static async signup(user) {
-        let res = await this.request(`auth/register`, user, "post");
+    static async signup(first_name, last_name, email, password, username) {
+        // let res = await this.request(`auth/register`, "post");
+        let res = await this.request(`auth/register`, {
+            first_name,
+            last_name,
+            email,
+            password
+        }, "post");
         return res.token;
     }
 
     //DONE: Create function to login user
-    static async login(user) {
-        let res = await this.request(`auth/login`, user, "post");
-        return res.token;
-    }
-
-    //login user
     // static async login(username, password) {
-    //     let res = await this.request(`auth/login`, {
-    //         username,
-    //         password
-    //     }, "post");
+    //     // let res = await this.request(`auth/login`, username, password, "post");
+    //     let res = await this.request(`users/${username, password}`, "post");
     //     return res.token;
     // }
 
+    //login user
+    static async login(username, password) {
+        let res = await this.request(`auth/token`, { username, password }, "post");
+        return res.token;
+    }
 
 
     //DONE: Create function that updates a users profile
-    static async updateUser(username, data) {
-        let res = await this.request(`users/${username}`, data, "patch");
+    static async updateUser(username, first_name, last_name, email, password) {
+        let res = await this.request(`users/${username}`, {
+            first_name,
+            last_name,
+            email,
+            password
+        }, "patch");
         return res.user;
     }
 
-    // static async updateUser(username, data) {
-    //     try {
-    //         let res = await this.request(`users/${username}`, data, "patch");
-    //         return res.user;
-    //     } catch (err) {
-    //         console.error("API Error:", err.response);
-    //         let message = err.response.data.error.message;
-    //         throw Array.isArray(message) ? message : [message];
-    //     }
-    // }
     /** Company */
-    /** Get details on a company by handle. */
 
-    //DONE: Create function to get company details by handle
+    //DONE: Create function to get company details by handle */
     static async getCompany(handle) {
         let res = await this.request(`companies/${handle}`);
-        console.log(res.data, handle);
         return res.company;
     }
 
-    static async getCompanies(name) {
-        let res = await this.request(`companies`, {
-            name
-        });
-        return res.companies;
-    }
 
-    //DONE: Create function to get all companies
-    // static async getAllCompanies(data = {}) {
-    //     let res = await this.request(`companies`, data);
-    //     return res.companies;
-    // }
 
 
 }
