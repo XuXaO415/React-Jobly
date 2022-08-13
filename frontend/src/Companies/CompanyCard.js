@@ -27,7 +27,7 @@ function CompanyCard({ handle, name, description, logoUrl, numEmployees }) {
     //     </div>
     // </div>
 
-    <Card style={{ width: "18rem" }}>
+    <Card style={{ width: "30rem" }}>
     <CardHeader>
     <Card.Title className="">{name}</Card.Title>
     <div>

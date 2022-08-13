@@ -1,7 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, {
+    useState,
+    useEffect
+} from "react";
 import JoblyApi from "../JoblyApi";
-import CompanyCard from "../Company/CompanyCard";
-import { Card, CardColumns, CardSubtitle, CardBody, CardTitle, CardText, Container, Row } from "reactstrap";
+import CompanyCard from "../Companies/CompanyCard";
+import {
+    Card,
+    CardColumns,
+    CardSubtitle,
+    CardBody,
+    CardTitle,
+    CardText,
+    Container,
+    Row
+} from "reactstrap";
 
 function CompanyList() {
     const [companies, setCompanies] = useState([]);
@@ -17,19 +29,27 @@ function CompanyList() {
             }
         }
         getCompanies();
-    }
-    , []);
+    }, []);
 
     if (error) {
-        return <p>Error: {error.message}</p>;
+        return <p > Error: {
+            error.message
+        } < /p>;
     }
 
-    return (
-        <div className="row">
-            {companies.map(company => (
-                <CompanyCard key={company.handle} company={company} />
-            ))}
-        </div>
+    return ( <
+        div className = "row" > {
+            companies.map(company => ( <
+                CompanyCard key = {
+                    company.handle
+                }
+                company = {
+                    company
+                }
+                />
+            ))
+        } <
+        /div>
     );
 }
 

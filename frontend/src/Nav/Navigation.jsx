@@ -5,7 +5,19 @@ import { useHistory } from "react-router-dom";
 import careerChoice from "../career-choice.png";
 import UserContext from "../Users/UserContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {NavbarBrand, Navbar, NavItem, Nav, Collapse, NavbarText} from 'reactstrap';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  NavbarText,
+} from 'reactstrap';
 
 
 // function Navigation({ logout }) {
@@ -96,11 +108,11 @@ function Navigation ({ loggedInUser, logout }) {
     //   )}
     // </Nav>
 
-    <>
+    <div>
   <Navbar
-    className="my-2"
-    color="secondary"
-    dark
+    expand="lg"
+    color="light"
+    dark={false}
   >
     <NavbarBrand href="/">
       <img src={careerChoice} className="d-inline-block align-top" alt="job-image"/>
@@ -109,10 +121,12 @@ function Navigation ({ loggedInUser, logout }) {
   </Navbar>
   <Navbar>
   
-      <Nav className="mr-auto" navbar>
+  
+      <Nav className="me-auto" navbar>
         <NavItem>
           <NavLink to="/" exact activeClassName="active">Home</NavLink>
         </NavItem>
+        
         <NavItem>
           <NavLink to="/companies" activeClassName="active">Companies</NavLink>
         </NavItem>
@@ -140,10 +154,8 @@ function Navigation ({ loggedInUser, logout }) {
         )}
       </Nav>
   </Navbar>
-</>
+</div>
   );
-
-
 }
 
 
