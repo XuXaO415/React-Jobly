@@ -17,7 +17,7 @@ export const TOKEN_STORAGE_ID = "jobly-token";
 function App() {
 
     const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
-    const [user, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
     const [data, setData] = useState(false);
 
     useEffect(() => { 
@@ -44,13 +44,36 @@ function App() {
         try {
             const { token } = await JoblyApi.login(username, password);
             setToken(token);
+            return { success: true, login: true };
         } catch (err) {
-            console.error(err);
+            return { success: false, login: false, err };
+        }
+    };
+
+    const signup = async (username, password, first_name, last_name, email, photo_url) => {
+        try {
+            const { token } = await JoblyApi.signup(username, password, first_name, last_name, email, photo_url);
+            setToken(token);
+            return { success: true, register: true };
+        } catch (err) {
+            return { success: false, register: false, err };
         }
     }
+    
+    if (!data) {
+        return <div>Loading...</div>;
+    }
 
-
-
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <UserContext.Provider value={{ currentUser, login, logout, signup }}>
+                    <Navigation logout={logout} />
+                    <Routes login={login} signup={signup} />
+                </UserContext.Provider>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 // function App() {

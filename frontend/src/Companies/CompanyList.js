@@ -45,7 +45,7 @@ function CompanyList() {
         (async function () {
             const companies = await JoblyApi.getCompanies();
             setCompanies(companies);
-        })()
+        })();
     }, []);
 
     return (

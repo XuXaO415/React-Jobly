@@ -1,8 +1,12 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import {Navbar, NavItem, Nav} from "reactstrap";
+// import {Navbar, NavItem, Nav} from "reactstrap";
+import careerChoice from "../career-choice.png";
 import UserContext from "../Users/UserContext";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {NavbarBrand, Navbar, NavItem, Nav, Collapse, NavbarText} from 'reactstrap';
+
 
 // function Navigation({ logout }) {
 //   const { currentUser } = useContext(UserContext);
@@ -61,37 +65,83 @@ function Navigation ({ loggedInUser, logout }) {
   }
 
   return (
-    <Nav>
-      <NavItem>
-        <NavLink to="/" exact activeClassName="active">Home</NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink to="/companies" activeClassName="active">Companies</NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink to="/jobs" activeClassName="active">Jobs</NavLink>
-      </NavItem>
-      {loggedInUser ? (
-        <>
-          <NavItem>
-            <NavLink to="/profile" activeClassName="active">Profile</NavLink>
-          </NavItem>
-          <NavItem>
-            <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
-          </NavItem>
-        </>
-      ) : (
-        <>
-          <NavItem>
-            <NavLink to="/login" activeClassName="active">Login</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink to="/signup" activeClassName="active">Signup</NavLink>
-          </NavItem>
-        </>
-      )}
-    </Nav>
-  )
+    // <Nav>
+    //   <NavItem>
+    //     <NavLink to="/" exact activeClassName="active">Home</NavLink>
+    //   </NavItem>
+    //   <NavItem>
+    //     <NavLink to="/companies" activeClassName="active">Companies</NavLink>
+    //   </NavItem>
+    //   <NavItem>
+    //     <NavLink to="/jobs" activeClassName="active">Jobs</NavLink>
+    //   </NavItem>
+    //   {loggedInUser ? (
+    //     <>
+    //       <NavItem>
+    //         <NavLink to="/profile" activeClassName="active">Profile</NavLink>
+    //       </NavItem>
+    //       <NavItem>
+    //         <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+    //       </NavItem>
+    //     </>
+    //   ) : (
+    //     <>
+    //       <NavItem>
+    //         <NavLink to="/login" activeClassName="active">Login</NavLink>
+    //       </NavItem>
+    //       <NavItem>
+    //         <NavLink to="/signup" activeClassName="active">Signup</NavLink>
+    //       </NavItem>
+    //     </>
+    //   )}
+    // </Nav>
+
+    <>
+  <Navbar
+    className="my-2"
+    color="secondary"
+    dark
+  >
+    <NavbarBrand href="/">
+      <img src={careerChoice} className="d-inline-block align-top" alt="job-image"/>
+      Jobly
+    </NavbarBrand>
+  </Navbar>
+  <Navbar>
+  
+      <Nav className="mr-auto" navbar>
+        <NavItem>
+          <NavLink to="/" exact activeClassName="active">Home</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink to="/companies" activeClassName="active">Companies</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink to="/jobs" activeClassName="active">Jobs</NavLink>
+        </NavItem>
+        {loggedInUser ? (
+          <>
+            <NavItem>
+              <NavLink to="/profile" activeClassName="active">Profile</NavLink>
+            </NavItem>
+            <NavItem>
+              <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+            </NavItem>
+          </>
+        ) : (
+          <>
+            <NavItem>
+              <NavLink to="/login" activeClassName="active">Login</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink to="/signup" activeClassName="active">Signup</NavLink>
+            </NavItem>
+          </>
+        )}
+      </Nav>
+  </Navbar>
+</>
+  );
 
 
 }

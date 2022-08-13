@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import JoblyApi from "../JoblyApi";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-// import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from "reactstrap";
-import Button from "react-bootstrap/Button";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from "reactstrap";
 import Card from "react-bootstrap/Card";
 import {CardHeader, CardTitle} from "reactstrap";
+
 
 function CompanyCard({ handle, name, description, logoUrl, numEmployees }) {
   const history = useHistory();
@@ -28,7 +29,7 @@ function CompanyCard({ handle, name, description, logoUrl, numEmployees }) {
 
     <Card style={{ width: "18rem" }}>
     <CardHeader>
-    <Card.Title>{name}</Card.Title>
+    <Card.Title className="">{name}</Card.Title>
     <div>
       <Card.Img variant="top" img src={logoUrl} />
       </div>
@@ -36,7 +37,9 @@ function CompanyCard({ handle, name, description, logoUrl, numEmployees }) {
         <Card.Text>
         {description}
         </Card.Text>
+        <Link to={`/companies/${handle}`}>
         <Button variant="primary">View Job</Button>
+        </Link>
       </Card.Body>
     </CardHeader>
     </Card>
