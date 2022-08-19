@@ -5,17 +5,39 @@ import JobCardList from "../Jobs/JobCardList";
 import { Card, CardSubtitle, CardTitle, CardText, Container, Row } from "reactstrap";
 import { MDBSpinner } from 'mdb-react-ui-kit';
 
+// function CompanyDetail() {
+//     const [company, setCompany] = useState(null);
+//     const [jobs, setJobs] = useState(null);
+
+//     useEffect(() => {
+//         async function getCompany() {
+//             const company = await JoblyApi.getCompany();
+//             setCompany(company);
+//         }
+//         getCompany();
+//     }, []);
+//     if (!company) {
+//         return <div className="text-center">
+//         <MDBSpinner role="status" color="primary" size="5x" >
+//         <span className="sr-only">Loading...</span>
+//         </MDBSpinner>
+//         </div>;
+//     }
+// }
+
 function CompanyDetail() {
     const [company, setCompany] = useState(null);
+    const { handle } = useParams();
     const [jobs, setJobs] = useState(null);
 
     useEffect(() => {
         async function getCompany() {
-            const company = await JoblyApi.getCompany();
+            const company = await JoblyApi.getCompany(handle);
             setCompany(company);
         }
         getCompany();
-    }, []);
+    } , [handle]);
+
     if (!company) {
         return <div className="text-center">
         <MDBSpinner role="status" color="primary" size="5x" >
@@ -23,22 +45,23 @@ function CompanyDetail() {
         </MDBSpinner>
         </div>;
     }
-
-    // return (
-    //     <Container fluid>
-    //         <Row>
-    //             <Card body inverse color="info">
-    //                 <CardTitle>{company.name}</CardTitle>
-    //                 <CardSubtitle>{company.handle}</CardSubtitle>
-    //                 <CardText>{company.description}</CardText>
-    //             </Card>
-    //         </Row>
-    //         <Row>
-    //             <JobCardList jobs={jobs} />
-    //         </Row>
-    //     </Container>
-    // );
-
+    return (
+        <div className="CompanyDetail">
+            <Container>
+                <Row>
+                    <Card body>
+                        <CardTitle>{company.name}</CardTitle>
+                        <CardSubtitle>{company.description}</CardSubtitle>
+                        <CardText>{company.num_employees}</CardText>
+                    </Card>
+                    <Card CardSubtitle>
+                        <CardTitle>Jobs</CardTitle>
+                        <JobCardList jobs={company.jobs} />
+                    </Card>
+                </Row>
+            </Container>
+        </div>
+    );
 }
 
 
