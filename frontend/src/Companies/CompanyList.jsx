@@ -10,6 +10,7 @@ import {
   MDBBtn,
 } from 'mdb-react-ui-kit'
 import { Button } from "reactstrap";
+;
 
 
 
@@ -38,9 +39,12 @@ function CompanyList() {
         setCompanies(companies);
     }
 
-
-
-
+    // function handleSearch(e) {
+    //     e.preventDefault();
+    //     const name = e.target.elements.name.value;
+    //     search(name); 
+    // }
+    
   return (
     <div className="CompanyList col-md-8 offset-md-2">
       <h1 className="font-weight-bold text-center">Companies</h1>
