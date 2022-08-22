@@ -25,13 +25,13 @@ function CompanySearchForm({search, searchCompanies }) {
         if (searchTerm === "" || searchTerm === undefined) {
             searchCompanies();
         } else {
-            searchCompanies(searchTerm.trim());
+            searchCompanies({name: searchTerm.trim()});
         }
     }
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Container maxWidth="sm">
+            <Container maxwidth="sm">
                 <Form.Control
                     type="search"
                     placeholder="Search"
