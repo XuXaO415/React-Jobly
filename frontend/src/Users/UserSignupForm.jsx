@@ -24,7 +24,7 @@ function UserSignupForm() {
   const [formData, setFormData] = useState(INITIAL_STATE);
   const { currentUser } = useContext(UserContext);
   const history = useHistory();
-  // console.debug("UserSignUpForm rendered=", Boolean, "currentUser=", currentUser);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,10 +44,10 @@ function UserSignupForm() {
       <Container className="mt-5">
         <Row className="UserSignupForm">
           <Card body>
-            <h1> Sign Up </h1>{" "}
+            <h1> Sign Up </h1>
             <Form onSubmit={handleSubmit}>
               <FormGroup>
-                <Label for="username"> Username </Label>{" "}
+                <Label for="username"> Username </Label>
                 <Input
                   type="text"
                   name="username"
@@ -55,10 +55,10 @@ function UserSignupForm() {
                   placeholder="Username"
                   onChange={handleChange}
                   value={formData.username}
-                />{''}
-              </FormGroup>{" "}
+                />
+              </FormGroup>
               <FormGroup>
-                <Label for="password"> Password </Label>{" "}
+                <Label for="password"> Password </Label>
                 <Input
                   type="password"
                   name="password"
@@ -66,10 +66,10 @@ function UserSignupForm() {
                   placeholder="Password"
                   onChange={handleChange}
                   value={formData.password}
-                />{" "}
-              </FormGroup>{" "}
+                />
+              </FormGroup>
               <FormGroup>
-                <Label for="first_name"> First Name </Label>{" "}
+                <Label for="first_name"> First Name </Label>
                 <Input
                   type="text"
                   name="first_name"
@@ -77,10 +77,10 @@ function UserSignupForm() {
                   placeholder="First Name"
                   onChange={handleChange}
                   value={formData.first_name}
-                />{" "}
-              </FormGroup>{" "}
+                />
+              </FormGroup>
               <FormGroup>
-                <Label for="last_name"> Last Name </Label>{" "}
+                <Label for="last_name"> Last Name </Label>
                 <Input
                   type="text"
                   name="last_name"
@@ -88,10 +88,10 @@ function UserSignupForm() {
                   placeholder="Last Name"
                   onChange={handleChange}
                   value={formData.last_name}
-                />{" "}
-              </FormGroup>{" "}
+                />
+              </FormGroup>
               <FormGroup>
-                <Label for="email"> Email </Label>{" "}
+                <Label for="email"> Email </Label>
                 <Input
                   type="email"
                   name="email"
@@ -99,15 +99,15 @@ function UserSignupForm() {
                   placeholder="Email"
                   onChange={handleChange}
                   value={formData.email}
-                />{" "}
-              </FormGroup>{" "}
+                />
+              </FormGroup>
               <Button color="primary" type="submit">
                 {" "}
-                Sign Up{" "}
-              </Button>{" "}
-            </Form>{" "}
-          </Card>{" "}
-        </Row>{" "}
+                Sign Up
+              </Button>
+            </Form>
+          </Card>
+        </Row>
       </Container>
   );
 }

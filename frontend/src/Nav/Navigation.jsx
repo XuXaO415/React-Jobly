@@ -18,6 +18,20 @@ import {
   DropdownItem,
   NavbarText,
 } from 'reactstrap';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import AdbIcon from '@mui/icons-material/Adb';
+
 
 
 // function Navigation({ logout }) {
@@ -77,36 +91,6 @@ function Navigation ({ loggedInUser, logout }) {
   }
 
   return (
-    // <Nav>
-    //   <NavItem>
-    //     <NavLink to="/" exact activeClassName="active">Home</NavLink>
-    //   </NavItem>
-    //   <NavItem>
-    //     <NavLink to="/companies" activeClassName="active">Companies</NavLink>
-    //   </NavItem>
-    //   <NavItem>
-    //     <NavLink to="/jobs" activeClassName="active">Jobs</NavLink>
-    //   </NavItem>
-    //   {loggedInUser ? (
-    //     <>
-    //       <NavItem>
-    //         <NavLink to="/profile" activeClassName="active">Profile</NavLink>
-    //       </NavItem>
-    //       <NavItem>
-    //         <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
-    //       </NavItem>
-    //     </>
-    //   ) : (
-    //     <>
-    //       <NavItem>
-    //         <NavLink to="/login" activeClassName="active">Login</NavLink>
-    //       </NavItem>
-    //       <NavItem>
-    //         <NavLink to="/signup" activeClassName="active">Signup</NavLink>
-    //       </NavItem>
-    //     </>
-    //   )}
-    // </Nav>
 
     <div>
   <Navbar
@@ -157,6 +141,8 @@ function Navigation ({ loggedInUser, logout }) {
 </div>
   );
 }
+
+
 
 
 

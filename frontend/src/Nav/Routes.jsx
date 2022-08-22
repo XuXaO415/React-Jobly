@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Homepage from "../Homepage";
-import CompanyDetails from "../Company/CompanyDetails";
-import CompanyList from "../Company/CompanyList";
+import CompanyDetails from "../Companies/CompanyDetails";
+import CompanyList from "../Companies/CompanyList";
 import JobList from "../Jobs/JobList";
 import UserContext from "../Users/UserContext";
 import UserLoginForm from "../Users/UserLoginForm";
@@ -45,7 +45,6 @@ function Routes({ login, signup }) {
     // );
 
     return (
-        <div className="pt-5">
             <Switch>
                 <Route exact path="/">
                     <Homepage />
@@ -65,14 +64,12 @@ function Routes({ login, signup }) {
                 <Route exact path="/jobs">
                     <JobList />
                 </Route>
-                {/* <Route exact path="/profile">
+                <Route exact path="/profile">
                     <UserProfileForm />
-                </Route> */}
+                </Route>
                 <Redirect to="/" />
                 </Switch>
-
-        </div>
-    )
+    );
 }
 
 export default Routes;

@@ -48,7 +48,7 @@ class JoblyApi {
     static async getJobs() {
         return await this.request("jobs");
     }
-    
+
 
     /** User */
 
@@ -59,11 +59,14 @@ class JoblyApi {
     }
 
     //DONE: Create function to signup new user
-    static async signup(first_name, last_name, email, password, username) {
+    //Changed the name of the function to signupUser to avoid confusion with the signup function in the UserSignupForm component.
+    // Changed the parameters to match the API endpoint.
+    static async signupUser({username, password, firstName, lastName, email}) {
         // let res = await this.request(`auth/register`, "post");
         let res = await this.request(`auth/register`, {
-            first_name,
-            last_name,
+            username,
+            firstName,
+            lastName,
             email,
             password
         }, "post");
@@ -78,23 +81,30 @@ class JoblyApi {
     // }
 
     //login user
-    static async login(username, password) {
-        let res = await this.request(`auth/token`, { username, password }, "post");
+    static async login({username, password}) {
+        let res = await this.request(`auth/token`, {
+            username,
+            password
+        }, "post");
         return res.token;
     }
 
 
     //DONE: Create function that updates a users profile
-    static async updateUser(username, first_name, last_name, email, password) {
-        let res = await this.request(`users/${username}`, {
-            first_name,
-            last_name,
-            email,
-            password
-        }, "patch");
+    // static async updateUser(username, first_name, last_name, email, password) {
+    //     let res = await this.request(`users/${username}`, {
+    //         first_name,
+    //         last_name,
+    //         email,
+    //         password
+    //     }, "patch");
+    //     return res.user;
+    //}
+
+    static async updateUser(username, data) {
+        let res = await this.request(`users/${username}`, data, "patch");
         return res.user;
     }
-
     /** Company */
 
     //DONE: Create function to get company details by handle */
@@ -103,8 +113,17 @@ class JoblyApi {
         return res.company;
     }
 
+    static async searchCompanies(search) {
+        let res = await this.request(`companies`, search);
+        return res.companies;
+    }
 
-
+    static async getCompanies(name) {
+        let res = await this.request(`companies`, {
+            name
+        });
+        return res.companies;
+    }
 
 }
 
