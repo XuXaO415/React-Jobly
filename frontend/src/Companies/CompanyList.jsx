@@ -7,46 +7,59 @@ import {
   MDBCardTitle,
   MDBCardText,
   MDBCardImage,
-  MDBBtn,
 } from 'mdb-react-ui-kit'
 import { Button } from "reactstrap";
-;
+
+import CompanySearchForm from './CompanySearchForm';
 
 
 
 function CompanyList() {
     const [companies, setCompanies] = useState([]);
+    const [error, setError] = useState(null);
 
 // console.debug("companyList=", companies);
     console.debug("CompanyList");
-
-//   useEffect(() => {
-//     ;(async function () {
-//       const companies = await JoblyApi.getCompanies()
-//       setCompanies(companies)
-//     })()
-//   }, [])
 
 //useEffect hook when user clicks on a company, it will fetch the company details and the jobs for that company
 
   useEffect(function getCompaniesOnMount() {
     console.debug("CompanyList useEffect getCompaniesOnMount");
-    search();
+    searchCompanies();
+    // search();
   }, []);
 
-    async function search(name) {
-        const companies = await JoblyApi.getCompanies(name);
+  // async function search(name) {
+  //   console.debug("CompanyList search");
+  //   try {
+  //     const companies = await JoblyApi.getCompanies(name);
+  //     setCompanies(companies);
+  //   } catch (err) {
+  //     setError(err);
+  //   }
+  // }
+  // if (error) {
+  //   return <p> Error: {error.message} </p>;
+  // }
+
+    // async function search(name) {
+    //     const companies = await JoblyApi.getCompanies(name);
+    //     setCompanies(companies);
+    // }
+
+    async function searchCompanies(searchTerm = {}) {
+        const companies = await JoblyApi.filterCompanies(searchTerm);
         setCompanies(companies);
     }
+    if (error) {
+        return <p> Error: {error.message} </p>;
+    }
 
-    // function handleSearch(e) {
-    //     e.preventDefault();
-    //     const name = e.target.elements.name.value;
-    //     search(name); 
-    // }
-    
+
+
   return (
     <div className="CompanyList col-md-8 offset-md-2">
+    <CompanySearchForm searchCompanies={searchCompanies} />
       <h1 className="font-weight-bold text-center">Companies</h1>
       <MDBCard>
         {companies &&
