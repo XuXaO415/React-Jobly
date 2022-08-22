@@ -125,6 +125,22 @@ class JoblyApi {
         return res.companies;
     }
 
+    // static async filterCompanies(filter) {
+    //     let res = await this.request(`companies`, filter);
+    //     return res.companies;
+    // }
+
+    // reference findAll search filter from backend company model
+    static async filterCompanies(searchFilters = {}) {
+        let res = await this.request(`companies`, searchFilters);
+        return res.companies;
+    }
+
+    static async getJobs() {
+        let res = await this.request(`jobs`);
+        return res.jobs;
+    }
+
 }
 
 // for now, put token ("testuser" / "password" on class)
