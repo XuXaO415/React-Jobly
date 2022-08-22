@@ -22,11 +22,13 @@ function JobList() {
     return <p> Error: {error.message} </p>;
   }
   return (
-    <div className="row">  
+    <div className="row"> 
+   
       {jobs.map((job) => (
-        <JobCard key={job.id} job={job} />
+        <JobCard job />
       ))}
     </div>
+    
   );
 }
 
