@@ -6,7 +6,7 @@ import Navigation from "./Nav/Navigation";
 import Routes from "./Nav/Routes";
 import UserContext from "./Users/UserContext";
 import jwt from "jsonwebtoken";
-import axios from "axios";
+
 
 
 
@@ -50,24 +50,40 @@ function App() {
         }
     };
 
-    const signup = async (username, password, first_name, last_name, email, photo_url) => {
+    const signup = async (username, password, firstName, lastName, email) => {
         try {
-            const { token } = await JoblyApi.signup(username, password, first_name, last_name, email, photo_url);
+            const { token } = await JoblyApi.signupUser(username, password, firstName, lastName, email);
             setToken(token);
             return { success: true, register: true };
         } catch (err) {
             return { success: false, register: false, err };
         }
-    }
-    
-    if (!data) {
-        return <div>Loading...</div>;
-    }
+    };
+     const appliedToJob = async (jobId) => {
+        try {
+            const { token } = await JoblyApi.appliedToJob(jobId);
+            setToken(token);
+            return { success: true, applied: true };
+        } catch (err) {
+            return { success: false, applied: false, err };
+        }
+    };
+
+    const applyToJob = async (jobId) => {
+        try {
+            const { token } = await JoblyApi.applyToJob(jobId);
+            setToken(token);
+            return { success: true, apply: true };
+        } catch (err) {
+            return { success: false, apply: false, err };
+        }
+    };
+
 
     return (
         <div className="App">
             <BrowserRouter>
-                <UserContext.Provider value={{ currentUser, login, logout, signup }}>
+                <UserContext.Provider value={{ currentUser, setCurrentUser, appliedToJob, applyToJob  }}>
                     <Navigation logout={logout} />
                     <Routes login={login} signup={signup} />
                 </UserContext.Provider>
