@@ -1,35 +1,96 @@
 import React, { useState, useEffect } from "react";
 import JoblyApi from "../JoblyApi";
-import JobCard from "./JobCard";
 import JobCardList from "./JobCardList";
+import CompanySearchForm from "../Companies/CompanySearchForm";
+import Spinner from 'react-bootstrap/Spinner';
 
 function JobList() {
-  const [jobs, setJobs] = useState([]);
-  const [error, setError] = useState(null);
+  const [jobs, setJobs] = useState(null);
+  const [title , setTitle] = useState(null);
 
-  useEffect(() => {
+  useEffect(function getAllJobs() {
     async function getJobs() {
-      try {
-        const jobs = await JoblyApi.getJobs();
-        setJobs(jobs);
-      } catch (err) {
-        setError(err);
-      }
+      const jobs = await JoblyApi.getJobs();
+      setJobs(jobs);
     }
     getJobs();
   } , []);
-  if (error) {
-    return <p> Error: {error.message} </p>;
+  
+  function handleSearch(title) {
+    setTitle(title);
   }
+
+  if (!jobs) {
+    return <div className="text-center">
+    <Spinner animation="grow" variant="primary" role="status">
+    <p></p>
+    <span className="visually-hidden">Loading...</span>
+    </Spinner>
+    </div>;
+  }
+
   return (
-    <div className="row"> 
-   
-      {jobs.map((job) => (
-        <JobCard job />
-      ))}
+    <div className="JobList m-5">
+      <CompanySearchForm onSearch={handleSearch} />
+      <JobCardList jobs={jobs} title={title} />
     </div>
-    
-  );
+  )
+
+
+
+
+
+
+
+
+  // async function getJobs() {
+  //   const jobs = await JoblyApi.getJobs();
+  //   setJobs(jobs);
+  // }
+  // useEffect(() => { 
+  //   getJobs();
+  // } , []);
+
+  // return (
+  //   <div className="JobList">
+  //     <CompanySearchForm />
+  //     <JobCardList jobs={jobs} />
+  //   </div>
+  // );
+
+
+
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   async function getJobs() {
+  //     try {
+  //       const jobs = await JoblyApi.getJobs();
+  //       setJobs(jobs);
+  //     } catch (err) {
+  //       setError(err);
+  //     }
+  //   }
+  //   getJobs();
+  // } , []);
+  // if (error) {
+  //   return <p> Error: {error.message} </p>;
+  // }
+  // return (
+  //   <div className="row"> 
+   
+  //     {jobs.map((job) => (
+  //       <JobCardList {jobs} />
+  //     ))}
+  //   </div>
+  // );
 }
 
 
