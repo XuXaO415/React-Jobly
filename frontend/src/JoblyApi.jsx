@@ -43,11 +43,6 @@ class JoblyApi {
 
     // Individual API routes
 
-    /** Jobs */
-    //TODO: Create a functions that lists all jobs
-    static async getJobs() {
-        return await this.request("jobs");
-    }
 
 
     /** User */
@@ -136,10 +131,22 @@ class JoblyApi {
         return res.companies;
     }
 
+        /** Jobs */
     static async getJobs() {
-        let res = await this.request(`jobs`);
+        let res = await this.request(`jobs`, );
         return res.jobs;
     }
+
+    static async getJob(id) {
+        let res = await this.request(`jobs/${id}`);
+        return res.job;
+    }
+
+    static async applyForJob(id, data) {
+        let res = await this.request(`jobs/${id}/apply`, data, "post");
+        return res.job;
+    }
+
 
 }
 
