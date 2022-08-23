@@ -28,7 +28,7 @@ import { MDBSpinner } from 'mdb-react-ui-kit';
 function CompanyDetail() {
     const [company, setCompany] = useState(null);
     const { handle } = useParams();
-    const [jobs, setJobs] = useState(null);
+
 
     useEffect(() => {
         async function getCompany() {
@@ -52,10 +52,9 @@ function CompanyDetail() {
                     <Card body>
                         <CardTitle>{company.name}</CardTitle>
                         <CardSubtitle>{company.description}</CardSubtitle>
-                        <CardText>{company.num_employees}</CardText>
                     </Card>
                     <Card CardSubtitle>
-                        <CardTitle>Jobs</CardTitle>
+                        <CardTitle>Current Open Jobs</CardTitle>
                         <JobCardList jobs={company.jobs} />
                     </Card>
                 </Row>
