@@ -181,7 +181,7 @@ import {
 // }
 
 
-class UserLoginForm extends Component {
+class UserLoginForm extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
