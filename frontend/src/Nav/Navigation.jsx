@@ -47,7 +47,7 @@ function Navigation ({ loggedInUser, logout }) {
     <div>
   <Navbar
     expand="lg"
-    color="light"
+    color="primary"
     dark={false}
   >
     <NavbarBrand href="/">
