@@ -34,54 +34,6 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 
 
-// function Navigation({ logout }) {
-//   const { currentUser } = useContext(UserContext);
-//   const history = useHistory();
-
-//   const handleLogout = () => {
-//     logout();
-//     history.push("/");
-//   }
-//   return (
-//     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-//       <Link to="/" className="navbar-brand">Jobly</Link>
-//       <div className="collapse navbar-collapse" id="navbarNav">
-//         <ul className="navbar-nav">
-//           {/* <li className="nav-item">
-//             <NavLink to="/" exact className="nav-link" activeClassName="active">Home</NavLink>
-//           </li> */}
-//           <li className="nav-item">
-//             <NavLink to="/companies" className="nav-link" activeClassName="active">Companies</NavLink>
-//           </li>
-//           <li className="nav-item">
-//             <NavLink to="/jobs" className="nav-link" activeClassName="active">Jobs</NavLink>
-//           </li>
-//           {currentUser ? (
-//             <>
-//               <li className="nav-item">
-//                 <NavLink to="/profile" className="nav-link" activeClassName="active">Profile</NavLink>
-//               </li>
-//               <li className="nav-item">
-//                 <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
-//               </li>
-//             </>
-//           ) : (
-//             <>
-//               <li className="nav-item">
-//                 <NavLink to="/login" className="nav-link" activeClassName="active">Login</NavLink>
-//               </li>
-//               <li className="nav-item">
-//                 <NavLink to="/signup" className="nav-link" activeClassName="active">Signup</NavLink>
-//               </li>
-//             </>
-//           )}
-//         </ul>
-//       </div>
-//     </nav>
-//   );
-  
-// }
-
 function Navigation ({ loggedInUser, logout }) {
   const history = useHistory();
 
@@ -132,7 +84,7 @@ function Navigation ({ loggedInUser, logout }) {
               <NavLink to="/login" activeClassName="active">Login</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/signup" activeClassName="active">Signup</NavLink>
+              <NavLink to="/signup" activeClassName="active">Sign up</NavLink>
             </NavItem>
           </>
         )}
