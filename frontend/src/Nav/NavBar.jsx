@@ -1,46 +1,63 @@
-// import * as React from 'react';
-// import { NavLink, Link } from 'react-router-dom';
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import { Navbar, Nav, NavItem } from "reactstrap";
-// import { useContext } from "react";
-// import UserContext from "../Users/UserContext";
+import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
+import { NavBar } from "reactstrap";
 
 
-// function NavBar () {
-//     const { user } = useContext(UserContext);
-//     console.debug("NavBar.user", user);
-//     return (
-//         <Navbar color="light" light expand="md">
-//             <NavLink to="/" className="navbar-brand">Jobly</NavLink>
-//             <Nav className="ml-auto" navbar>
-//                 <NavItem>
-//                     <NavLink to="/companies" className="nav-link">Companies</NavLink>
-//                 </NavItem>
-//                 <NavItem>
-//                     <NavLink to="/jobs" className="nav-link">Jobs</NavLink>
-//                 </NavItem>
-//                 {user ? (
-//                     <>
-//                         <NavItem>
-//                             <NavLink to="/profile" className="nav-link">Profile</NavLink>
-//                         </NavItem>
-//                         <NavItem>
-//                             <NavLink to="/logout" className="nav-link">Logout</NavLink>
-//                         </NavItem>
-//                     </>
-//                 ) : (
-//                     <>
-//                         <NavItem>
-//                             <NavLink to="/login" className="nav-link">Login</NavLink>
-//                         </NavItem>
-//                         <NavItem>
-//                             <NavLink to="/signup" className="nav-link">Sign Up</NavLink>
-//                         </NavItem>
-//                     </>
-//                 )}
-//             </Nav>
-//         </Navbar>
-//     );
-// }
+// class NavBar extends React.Component {
 
-// export default NavBar;
+//     render() {
+//         let loggedInUser = this.props.loggedInUser;
+//         let loggedIn = this.props.loggedIn;
+//         let history = this.props.history;
+//         let logout = this.props.logout;
+//         let signup = this.props.signup;
+//         let login = this.props.login;
+//         let logoutButton = null;
+//         let loginButton = null;
+//         let signupButton = null;
+//         let userNav = null;
+//         let userNavLink = null;
+
+//         if (loggedIn) {
+//             logoutButton = <NavLink className="nav-link" to="/logout" onClick={logout}>Logout</NavLink>;
+//             userNavLink = <NavLink className="nav-link" to="/user" onClick={() => { history.push("/user") }}>{loggedInUser}</NavLink>;
+//             userNav = <NavBar className="navbar-nav">{userNavLink}</NavBar>;
+//         }
+//         else {
+//             loginButton = <NavLink className="nav-link" to="/login" onClick={() => { history.push("/login") }}>Login</NavLink>;
+//             signupButton = <NavLink className="nav-link" to="/signup" onClick={() => { history.push("/signup") }}>Signup</NavLink>;
+//         }
+//         return (
+//             <div>
+//                 <NavBar className="navbar-nav">
+//                     <NavLink className="nav-link" to="/">Home</NavLink>
+//                     <NavLink className="nav-link" to="/companies" onClick={() => { history.push("/companies") }}>Companies</NavLink>
+//                     <NavLink className="nav-link" to="/jobs" onClick={() => { history.push("/jobs") }}>Jobs</NavLink>
+//                     {loggedInUser ? (
+//                         <>
+//                             <NavLink className="nav-link" to="/profile" onClick={() => { history.push("/profile") }}>Profile</NavLink>
+//                             <NavLink className="nav-link" to="/logout" onClick={logout}>Logout</NavLink>
+//                         </>
+//                     ) : (
+//                             <>
+//                                 <NavLink className="nav-link" to="/login" onClick={() => { history.push("/login") }}>Login</NavLink>
+//                                 <NavLink className="nav-link" to="/signup" onClick={() => { history.push("/signup") }}>Signup</NavLink>
+//                             </>
+//                         )}
+//                 </NavBar>
+//                 {userNav}
+//             </div>
+//         );
+//     }
+
+class NavBar extends React.Component {
+    
+
+}
+
+
+
+
+
+
+export default NavBar;

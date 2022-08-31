@@ -31,17 +31,19 @@ function CompanySearchForm({search, searchCompanies }) {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Container maxwidth="sm">
+            {/* <Container maxwidth="sm"> */}
+            <Form className="d-flex mb-4" > 
                 <Form.Control
                     type="search"
-                    placeholder="Search"
+                    placeholder="Enter search term..."
                     onChange={handleChange}
                     value={searchTerm}
                 />
                 <Button variant="primary" type="submit">
                     Search
                 </Button>
-            </Container>
+            {/* </Container> */}
+        </Form>
         </Form>
 
     );

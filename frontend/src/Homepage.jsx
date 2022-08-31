@@ -47,21 +47,14 @@ class Homepage extends React.Component {
                     <h2>Welcome Back, {this.props.currentUser.first_name} || {this.props.currentUser.username}!
                     </h2>
                 ) : (
-                    <p> 
                     <center>
-                
                     <Link className="btn btn-primary m-3" to="/login">
                         Login
                     </Link>
-                   
-                  
-                    <Link className="btn btn-secondary" to="/signup">
+                    <Link className="btn btn-primary m-3" to="/signup">
                         Signup
                     </Link>
-            
-                
                     </center>
-                    </p>
                 )}
             </div>
         );
