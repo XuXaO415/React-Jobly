@@ -1,67 +1,135 @@
 // Super simple skeleton for a user profile form
 
-import React, { useContext } from "react";
+import React, { Component } from "react";
 import UserContext from "./UserContext";
+import JoblyApi from "../JoblyApi";
+import { Form, FormGroup, Button, Input, Label, Badge } from "reactstrap";
 
-function UserProfileForm() {
-  const { user, updateUser } = useContext(UserContext);
 
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        updateUser(user.username, {
-          first_name: e.target.first_name.value,
-          last_name: e.target.last_name.value,
-          email: e.target.email.value,
-          password: e.target.password.value,
-        });
-      }}
-    >
-      <div className="form-group">
-        <label htmlFor="first_name"> First Name </label>{" "}
-        <input
-          type="text"
-          className="form-control"
-          id="first_name"
-          name="first_name"
-          defaultValue={user.first_name}
-        />{" "}
-      </div>{" "}
-      <div className="form-group">
-        <label htmlFor="last_name"> Last Name </label>{" "}
-        <input
-          type="text"
-          className="form-control"
-          id="last_name"
-          name="last_name"
-          defaultValue={user.last_name}
-        />{" "}
-      </div>{" "}
-      <div className="form-group">
-        <label htmlFor="email"> Email </label>{" "}
-        <input
-          type="email"
-          className="form-control"
-          id="email"
-          name="email"
-          defaultValue={user.email}
-        />{" "}
-      </div>{" "}
-      <div className="form-group">
-        <label htmlFor="password"> Password </label>{" "}
-        <input
-          type="password"
-          className="form-control"
-          id="password"
-          name="password"
-        />
-      </div>{" "}
-      <button type="submit" className="btn btn-primary">
-        Update Profile{" "}
-      </button>{" "}
-    </form>
-  );
+
+class Profile extends React.Component {
+  static contextType = UserContext;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    console.debug("handleSubmit formData=", this.state);
+    const { username, password, firstName, lastName, email } = this.state;
+    const { updateUser } = this.context;
+    let token = null;
+    try {
+      token = await JoblyApi.updateUser({
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      this.context.setUser(token);
+      this.setState({ redirect: true });
+      localStorage.setItem("token", token);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState((st) => ({
+      ...st,
+      [name]: value,
+    }));
+  }
+
+  render() {
+    return (
+      <div className="col-md-6 col-lg-4 offset-md-3 offset-lg-4">
+        <div className="Profile">
+          <h1>Profile</h1>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label for="username">Username</Label>
+              <p>
+                <Badge pill bg="primary">
+                  {this.state.username}
+                </Badge>
+              </p>
+              {/* <Input
+              type="text"
+              className="form-control"
+              id="username"
+              name="username"
+              value={this.state.username}
+              onChange={this.handleChange}
+            /> */}
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="firstName">First Name</Label>
+              <Input
+                type="text"
+                className="form-control"
+                id="firstName"
+                name="firstName"
+                value={this.state.firstName}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="lastName">Last Name</Label>
+              <Input
+                type="text"
+                className="form-control"
+                id="lastName"
+                name="lastName"
+                value={this.state.lastName}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input
+                type="email"
+                className="form-control"
+                id="email"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="password">Password</Label>
+              <Input
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                value={this.state.password}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+
+            <Button color="primary">Update Profile</Button>
+          </Form>
+        </div>
+      </div>
+    );
+  }
 }
-
-export default UserProfileForm;
+export default Profile;
