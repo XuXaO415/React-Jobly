@@ -42,7 +42,7 @@ class Homepage extends React.Component {
         return (
             <div className="homepage">
                 <h1 className="h1-welcome">Welcome to Jobly</h1>
-                <p className="lead-paragraph">Your next dream job awaits here.</p>
+                <p className="lead-paragraph">Your next dream job awaits you here.</p>
                 {this.props.currentUser  ? (
                     <h2>Welcome Back, {this.props.currentUser.first_name} || {this.props.currentUser.username}!
                     </h2>
