@@ -1,118 +1,130 @@
-import React,{ useState, useEffect, Component } from "react";
+import React, { useState, useEffect, Component } from "react";
 import JoblyApi from "./JoblyApi";
-import useLocalStorage from "./hooks/useLocalStorage";
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import Navigation from "./Nav/Navigation";
 import Routes from "./Nav/Routes";
 import UserContext from "./Users/UserContext";
 import jwt from "jsonwebtoken";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 export const TOKEN_STORAGE_ID = "jobly-token";
 
-class App extends React.Component { 
-    constructor(props) {
-        super(props);
-        this.state = {
-            // token: useLocalStorage(TOKEN_STORAGE_ID),
-            token: null,
-            currentUser: null,
-            data: false, 
-            isLoading: true
-        };
+function App() {
+  const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID, null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-        this.logout = this.logout.bind(this);
-        this.login = this.login.bind(this);
-        this.signup = this.signup.bind(this);
-        this.updateUser = this.updateUser.bind(this);
-    }
 
-    async componentDidMount() {
-        if(this.state.token) {
-            try {
-                const { username } = jwt.decode(this.state.token); 
-                const user = await JoblyApi.getCurrentUser(username);
-                this.setState({ currentUser: user, isLoading: false });
-            } catch (err) {
-                this.setState({ currentUser: null, isLoading: false });
-            }
-        } else {
-            this.setState({ isLoading: false });
-        }
-    }
-
-    async logout() {
-        localStorage.removeItem(TOKEN_STORAGE_ID);
-        this.setState({ token: null, currentUser: null });
-    }
-
-    async login(username, password) {
+  useEffect(function fetchCurrentUser(){
+    async function getCurrentUser(){
+      if(token) {
         try {
-            const { token } = await JoblyApi.login(username, password);
-            localStorage.setItem(TOKEN_STORAGE_ID, token);
-            this.setState({ token });
-            return { success: true, login: true };
+          JoblyApi.token = token;
+          // console.debug("App", "token=", token);
+          let { username } = jwt.decode(token);
+          let currentUser = await JoblyApi.getCurrentUser(username);
+          console.debug("App", "currentUser=======", currentUser);
+          setCurrentUser(currentUser);
         } catch (err) {
-            return { success: false, login: false, err };
-        }
+          console.error("App Error:", err);
+          setCurrentUser(null);
+      }
     }
+    setIsLoading(true);
+  }
+  getCurrentUser();
+  setIsLoading(false);
+}, [token]);
 
-    async signup(username, password, firstName, lastName, email) {
-        try {
-            const { token } = await JoblyApi.signupUser(username, password, firstName, lastName, email);
-            localStorage.setItem(TOKEN_STORAGE_ID, token);
-            this.setState({ token });
-            return { success: true, register: true };
-        } catch (err) {
-            return { success: false, register: false, err };
-        }
+//Create an async function to signup a new user using the JoblyApi. signup method
+  async function signup(data) {
+    try {
+      let token = await JoblyApi.signup(data);
+      // setToken(token);
+      localStorage.setToken(TOKEN_STORAGE_ID, token);
+      return { success: true, signup: true };
+    } catch (err) {
+      console.error("Signup failed:", err);
+      return { success: false, signup: false, err };
     }
+  }
+  //login a user using the JoblyApi.login method
 
-    async updateUser(username, password, firstName, lastName, email) {
-        try {
-            const { token } = await JoblyApi.updateUser(username, password, firstName, lastName, email);
-            localStorage.setItem(TOKEN_STORAGE_ID, token);
-            this.setState({ token });
-            return { success: true, update: true };
-        } catch (err) {
-            return { success: false, update: false, err };
-        }
+  async function login(data) {
+    try {
+      let token = await JoblyApi.login(data);
+      // setToken(token);
+      localStorage.setToken(TOKEN_STORAGE_ID, token);
+      return { success: true, login: true };
+    } catch (err) {
+      console.error("Login failed:", err);
+      return { success: false, login: false, err };
     }
+  }
 
-    async appliedToJob(jobId) {
-        try {
-            const { token } = await JoblyApi.appliedToJob(jobId);
-            localStorage.setItem(TOKEN_STORAGE_ID, token);
-            this.setState({ token });
-            return { success: true, applied: true };
-        } catch (err) {
-            return { success: false, applied: false, err };
-        }
-    }
+  function logout() {
+    localStorage.removeItem(token);
+    setToken(null);
+  }
 
-
-    render() {
-        if(this.state.isLoading) {
-            return <div>Loading...</div>;
-        }
-        return (
-            <div className="App">
-            <BrowserRouter>
-                <UserContext.Provider value={{
-                    currentUser: this.state.currentUser,
-                    logout: this.logout,
-                    login: this.login,
-                    signup: this.signup,
-                    updateUser: this.updateUser,
-                    appliedToJob: this.appliedToJob
-                }}>
-                    <Navigation currentUser login signup />
-                    <Routes  />
-                </UserContext.Provider>
-            </BrowserRouter>
-            </div>
-        );
+  // update the user's information using the JoblyApi.updateUser method
+  async function updateUserContext(data) {
+    try {
+      let user = await JoblyApi.updateUser(data);
+      setCurrentUser(user);
+      return { success: true, update: true };
+    } catch (err) {
+      console.error("Update failed:", err);
+      return { success: false, update: false, err };
     }
 }
+
+/* check if currentUser applied for job */
+  function checkIfApplied(jobId) {
+    if (currentUser) {
+      return currentUser.jobsApplied.includes(jobId);
+    }
+    return false;
+  }
+
+// check if user applied to a job using the JoblyApi.applyForJob method
+async function applyForJob(jobId) {
+  try {
+    if(checkIfApplied(jobId)) {
+      throw new Error("Already applied for this job");
+    } else {
+      let user = await JoblyApi.applyForJob(jobId);
+      // setCurrentUser(user.jobsApplied.push(jobId));
+      setCurrentUser({ ...currentUser, jobsApplied: [...currentUser.jobsApplied, jobId] });
+      return { success: true, apply: true };
+    } 
+  } catch (err){
+    console.error("Apply failed:", err);
+    return { success: false, apply: false, err };
+  }
+}
+
+if (isLoading) {
+  return <div>Loading...</div>;
+}
+
+  return (
+    <div className="App">
+    <BrowserRouter>
+      <UserContext.Provider value={{ 
+        currentUser, 
+        setCurrentUser, 
+        applyForJob, 
+        checkIfApplied
+      }}>
+        <Navigation login={logout} />
+        <Routes signup={signup} login={login} updateUserContext={updateUserContext} />
+      </UserContext.Provider>
+    </BrowserRouter>
+    </div>
+  );
+    }
+
 
 
 export default App;
