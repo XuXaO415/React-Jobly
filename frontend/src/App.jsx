@@ -14,27 +14,59 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Load user info from API. Until a user is logged in and they have a token,
+  // this should not run. It only needs to re-run when a user logs out, so
+  // the value of the token is a dependency for this effect.
 
-  useEffect(function fetchCurrentUser(){
-    async function getCurrentUser(){
-      if(token) {
+  useEffect(function getUserInfo() {
+    async function getCurrentUser() {
+      if (token) {
         try {
-          JoblyApi.token = token;
-          // console.debug("App", "token=", token);
-          let { username } = jwt.decode(token);
-          let currentUser = await JoblyApi.getCurrentUser(username);
-          console.debug("App", "currentUser=======", currentUser);
-          setCurrentUser(currentUser);
+          let user = await JoblyApi.getCurrentUser(
+            jwt.decode(token).username
+          );
+          setCurrentUser(user);
         } catch (err) {
-          console.error("App Error:", err);
           setCurrentUser(null);
+        }
       }
+      setIsLoading(false);
     }
-    setIsLoading(true);
-  }
-  getCurrentUser();
-  setIsLoading(false);
-}, [token]);
+    getCurrentUser();
+  } , [token]);
+  
+
+
+  
+
+
+
+
+
+
+
+
+//   useEffect(function fetchCurrentUser(){
+//     async function getCurrentUser(){
+//       if(token) {
+//         try {
+        
+//           // console.debug("App", "token=", token);
+//           let  username  = jwt.decode(token);
+//           JoblyApi.token = token;
+//           let currentUser = await JoblyApi.getCurrentUser(username);
+//           // console.debug("App", "currentUser=======", currentUser);
+//           setCurrentUser(currentUser);
+//         } catch (err) {
+//           console.error("App problem:", err);
+//           setCurrentUser(null);
+//       }
+//     }
+//     setIsLoading(true);
+//   }
+//   getCurrentUser();
+//   setIsLoading(false);
+// }, [token]);
 
 //Create an async function to signup a new user using the JoblyApi. signup method
   async function signup(data) {
@@ -53,8 +85,8 @@ function App() {
   async function login(data) {
     try {
       let token = await JoblyApi.login(data);
-      // setToken(token);
-      localStorage.setToken(TOKEN_STORAGE_ID, token);
+      setToken(token);
+      // localStorage.setToken(TOKEN_STORAGE_ID, token);
       return { success: true, login: true };
     } catch (err) {
       console.error("Login failed:", err);
@@ -63,21 +95,21 @@ function App() {
   }
 
   function logout() {
-    localStorage.removeItem(token);
+    setCurrentUser(null);
     setToken(null);
+    console.log("logout");
   }
 
-  // update the user's information using the JoblyApi.updateUser method
-  async function updateUserContext(data) {
-    try {
-      let user = await JoblyApi.updateUser(data);
-      setCurrentUser(user);
-      return { success: true, update: true };
-    } catch (err) {
-      console.error("Update failed:", err);
-      return { success: false, update: false, err };
-    }
-}
+//   async function updateUser(data) {
+//     try {
+//       let user = await JoblyApi.updateUser(data);
+//       setCurrentUser(user);
+//       return { success: true, update: true };
+//     } catch (err) {
+//       console.error("Update failed:", err);
+//       return { success: false, update: false, err };
+//     }
+// }
 
 /* check if currentUser applied for job */
   function checkIfApplied(jobId) {
@@ -115,15 +147,17 @@ if (isLoading) {
         currentUser, 
         setCurrentUser, 
         applyForJob, 
-        checkIfApplied
+        checkIfApplied,
       }}>
-        <Navigation login={logout} />
-        <Routes signup={signup} login={login} updateUserContext={updateUserContext} />
+        <Navigation logout={logout} />
+        <Routes signup={signup} login={login}  />
       </UserContext.Provider>
     </BrowserRouter>
     </div>
   );
-    }
+}
+  
+  
 
 
 

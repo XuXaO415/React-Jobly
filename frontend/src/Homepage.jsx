@@ -1,68 +1,63 @@
 import React, { useContext, Component } from "react";
 import { Link } from "react-router-dom";
-
 import UserContext from "./Users/UserContext";
 import "./Homepage.css";
 
 
+    
+// class Homepage extends React.Component {
+//     static contextType = UserContext;
 
-// function Homepage() {
-//     const { currentUser } = useContext(UserContext);
-//     const history = useHistory();
-
-//     return (
-//         <div className="Homepage">
-//             <h1>Welcome to Jobly</h1>
-//             <p className="lead">Your next dream job awaits.</p>
-//             {currentUser  ? 
-//             <h2>Welcome Back, {currentUser.first_name} || {currentUser.username}!
-//             </h2>
-//             : (
-//                 <p>
-//                     <Link className="btn btn-primary" to="/login">
-//                         Login
+//     render() {
+//         let currentUser  = this.context;
+//         return (
+//             <div className="Homepage">
+//             <div className="container text-lg-center">
+//                 <h1 className="h1-welcome">Welcome to Jobly</h1>
+//                 <p className="lead-paragraph">Your next dream job awaits you here.</p>
+//                 {this.props.currentUser  ? 
+//                     <h2>Welcome Back, {this.props.currentUser.firstName} || {this.props.currentUser.username}!
+//                     </h2>
+//                     : (
+//                         <center>
+//                         <Link className="btn btn-primary m-3" to="/login">
+//                             Login
 //                         </Link>
-//                     <Link className="btn btn-primary" to="/signup">
-//                         Signup
+//                         <Link className="btn btn-primary m-3" to="/signup">
+//                             Signup
 //                         </Link>
-//                 </p>
-//             )}
-//         </div>
-//     );
+//                         </center>
+//                     )}
+//             </div>
+//             </div>
+//         );
+//     }
 // }
 
 
-
-class Homepage extends React.Component {
-    static contextType = UserContext;
-
-    render() {
-        const { currentUser } = this.context;
-
-        return (
-            <div className="homepage">
-                <h1 className="h1-welcome">Welcome to Jobly</h1>
+const Homepage = () => {
+    const { currentUser } = useContext(UserContext);
+    return (
+        <div className="Homepage">
+            <div className="container text-lg-center">
+                < className="mb-4 h1-welcome">Welcome to Jobly</
                 <p className="lead-paragraph">Your next dream job awaits you here.</p>
-                {this.props.currentUser  ? (
-                    <h2>Welcome Back, {this.props.currentUser.first_name} || {this.props.currentUser.username}!
+                {currentUser ? 
+                    <h2>Welcome Back, {currentUser.firstName} || {currentUser.username}!
                     </h2>
-                ) : (
-                    <center>
-                    <Link className="btn btn-primary m-3" to="/login">
-                        Login
-                    </Link>
-                    <Link className="btn btn-primary m-3" to="/signup">
-                        Signup
-                    </Link>
-                    </center>
-                )}
+                    : (
+                        <center>
+                        <Link className="btn btn-primary m-3" to="/login">
+                            Login
+                        </Link>
+                        <Link className="btn btn-primary m-3" to="/signup">
+                            Signup
+                        </Link>
+                        </center>
+                    )}
             </div>
-        );
-
-    }
+        </div>
+    );
 }
-    
-
-
 
 export default Homepage;

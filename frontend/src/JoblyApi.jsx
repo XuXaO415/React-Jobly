@@ -61,15 +61,20 @@ class JoblyApi {
     //DONE: Create function to signup new user
     //Changed the name of the function to signupUser to avoid confusion with the signup function in the UserSignupForm component.
     // Changed the parameters to match the API endpoint.
-    static async signupUser({username, password, firstName, lastName, email}) {
-        // let res = await this.request(`auth/register`, "post");
-        let res = await this.request(`auth/register`, {
-            username,
-            firstName,
-            lastName,
-            email,
-            password
-        }, "post");
+    // static async signupUser({username, password, firstName, lastName, email}) {
+    //     // let res = await this.request(`auth/register`, "post");
+    //     let res = await this.request(`auth/register`, {
+    //         username,
+    //         firstName,
+    //         lastName,
+    //         email,
+    //         password
+    //     }, "post");
+    //     return res.token;
+    // }
+
+    static async signupUser(data) {
+        let res = await this.request(`auth/register`, data, "post");
         return res.token;
     }
 
@@ -138,6 +143,7 @@ class JoblyApi {
         return res.job;
     }
 
+  
 
 }
 
