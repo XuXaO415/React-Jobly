@@ -130,11 +130,10 @@ class UserLoginForm extends React.Component {
       login: false,
       username: "",
       password: "",
-      isLoading: false,
-      error: null,
-      success: null,
+      isLoading: false, // isLoading is false because we are not loading anything yet until the user submits the form
+   
     };
-    console.debug("UserLoginForm", "login=", typeof this.state.login);
+    console.debug("UserLoginForm:", this.state.login);
 
     this.showUserLogin = this.showUserLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -152,18 +151,26 @@ class UserLoginForm extends React.Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    const { username, password } = this.state;
-    const { login } = this.context;
-    let result = await JoblyApi.login({ username, password });
-    
+    let result = await JoblyApi.login({
+      username: this.state.username,
+      password: this.state.password,
+    });
+    console.debug("handleSubmit", "token=", result);
+    this.setState({ isLoading: true });
+// if the result is not null then we have a token and we can log the user in
+    if (result.success) {
+      this.context.login(result);
+      this.props.history.push("/companies");
+    } else {
+      this.setState({ error: result.message });
+    }
   }
 
   render() {
-    const { signup, username, password, isLoading, error, success } = this.state;
+    const { signup, username, password, error, success } = this.state;
     const { currentUser, setCurrentUser } = this.context;
-      if (currentUser) {
-      this.props.history.push("/companies");
-}
+ 
+
 return (
   <div className="LoginForm">
     <div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4">

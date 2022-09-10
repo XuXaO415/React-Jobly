@@ -14,6 +14,9 @@ import {
 } from "reactstrap";
 import JoblyApi from "../JoblyApi";
 
+// use form data to signup a new user using the JoblyApi. signup method
+
+
 class UserSignupForm extends React.Component {
   static contextType = UserContext;
   constructor(props) {
@@ -27,6 +30,8 @@ class UserSignupForm extends React.Component {
       redirect: false,
       signup: true,
     };
+
+    console.debug("UserSignupForm:", this.props);
 
     this.showUserSignup = this.showUserSignup.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -47,7 +52,8 @@ class UserSignupForm extends React.Component {
     console.debug("handleSubmit formData=", this.state);
     const { username, password, firstName, lastName, email } = this.state;
     const { signup } = this.context;
-    let token = null;
+    // let token = null;
+    let token = await JoblyApi.login(username, password);
     if(this.state.signup) {
       try {
         token = await JoblyApi.signupUser({ username, password, firstName, lastName, email });
@@ -59,9 +65,11 @@ class UserSignupForm extends React.Component {
       }
     } else {
       try {
-        token = await JoblyApi.login({ username, password });
+        let token = await JoblyApi.login({ username, password });
         this.context.setUser(token);
-        this.setState({ redirect: true }); 
+        this.setState({ redirect: true }); // redirect to home page
+        
+
         localStorage.setItem("token", token);
       } catch (err) {
         console.error(err);
@@ -132,40 +140,7 @@ class UserSignupForm extends React.Component {
       </Form>
     );
   }
-  // renderLoginForm() {
-  //   const { username, password } = this.state;
-  //   return (
-  //     <Form onSubmit={this.handleSubmit}>
-  //       <FormGroup>
-  //         <Label for="username"> Username </Label>
-  //         <Input
 
-  //           type="text"
-  //           name="username"
-  //           id="username"
-  //           value={username}
-  //           onChange={this.handleChange}
-  //         />
-  //       </FormGroup>
-  //       <FormGroup>
-  //         <Label for="password"> Password </Label>
-  //         <Input
-  //           type="password"
-  //           name="password"
-  //           id="password"
-  //           value={password}
-  //           onChange={this.handleChange}
-  //         />
-  //       </FormGroup>
-  //       <Button color="primary" type="submit">
-  //         Login
-  //       </Button>
-  //       <div className="mt-3 float-right">
-  //       <NavLink to="/signup" activeClassName="active">Sign Up</NavLink>
-  //       </div>
-  //     </Form>
-  //   );
-  // }
   render() {
     const { redirect } = this.state;
     if (redirect) {
