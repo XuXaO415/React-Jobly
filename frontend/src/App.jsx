@@ -10,41 +10,11 @@ import useLocalStorage from "./hooks/useLocalStorage";
 export const TOKEN_STORAGE_ID = "jobly-token";
 
 function App() {
-  const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID, null);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID);
+  const [currentUser, setCurrentUser] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Load user info from API. Until a user is logged in and they have a token,
-  // this should not run. It only needs to re-run when a user logs out, so
-  // the value of the token is a dependency for this effect.
-
-  useEffect(function getUserInfo() {
-    async function getCurrentUser() {
-      if (token) {
-        try {
-          let user = await JoblyApi.getCurrentUser(
-            jwt.decode(token).username
-          );
-          setCurrentUser(user);
-        } catch (err) {
-          setCurrentUser(null);
-        }
-      }
-      setIsLoading(false);
-    }
-    getCurrentUser();
-  } , [token]);
-  
-
-
-  
-
-
-
-
-
-
-
+  console.debug("App", { token, currentUser, isLoading });
 
 //   useEffect(function fetchCurrentUser(){
 //     async function getCurrentUser(){
@@ -54,19 +24,38 @@ function App() {
 //           // console.debug("App", "token=", token);
 //           let  username  = jwt.decode(token);
 //           JoblyApi.token = token;
-//           let currentUser = await JoblyApi.getCurrentUser(username);
+//           let user = await JoblyApi.getCurrentUser(username);
 //           // console.debug("App", "currentUser=======", currentUser);
-//           setCurrentUser(currentUser);
+//           setCurrentUser(user);
 //         } catch (err) {
 //           console.error("App problem:", err);
-//           setCurrentUser(null);
+//           setCurrentUser();
 //       }
 //     }
-//     setIsLoading(true);
+//     setIsLoading(false);
 //   }
 //   getCurrentUser();
 //   setIsLoading(false);
 // }, [token]);
+
+
+  // useEffect(function getUserInfo() {
+  //   async function getCurrentUser() {
+  //     if (token) {
+  //       try {
+  //         let user = await JoblyApi.getCurrentUser(
+  //           jwt.decode(token).username
+  //         );
+  //         setCurrentUser(user);
+  //       } catch (err) {
+  //         setCurrentUser(null);
+  //       }
+  //     }
+  //     setIsLoading(false);
+  //   }
+  //   getCurrentUser();
+  // } , [token]);
+  
 
 //Create an async function to signup a new user using the JoblyApi. signup method
   async function signup(data) {
@@ -149,13 +138,14 @@ if (isLoading) {
         applyForJob, 
         checkIfApplied,
       }}>
-        <Navigation logout={logout} />
-        <Routes signup={signup} login={login}  />
+        <Navigation logout />
+        <Routes signup={signup} login={login} />
       </UserContext.Provider>
     </BrowserRouter>
     </div>
   );
 }
+  
   
   
 
