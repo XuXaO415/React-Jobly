@@ -28,7 +28,7 @@ class UserSignupForm extends React.Component {
       lastName: "",
       email: "",
       redirect: false,
-      signup: true,
+      signup: true
     };
 
     console.debug("UserSignupForm:", this.props);
@@ -144,14 +144,14 @@ class UserSignupForm extends React.Component {
   render() {
     const { redirect } = this.state;
     if (redirect) {
-      return <Redirect to="/" />;
+      return <Redirect to="/signup" />;
     }
     return (
       <Container>
       <h1>Sign Up</h1>
         <Row>
           <Card body>
-            {this.state.signup ? this.renderSignupForm() : this.renderLoginForm()}
+            {this.renderSignupForm()}
           </Card>
         </Row>
       </Container>
