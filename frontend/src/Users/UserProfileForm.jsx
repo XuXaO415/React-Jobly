@@ -6,7 +6,8 @@ import JoblyApi from "../JoblyApi";
 import { Form, FormGroup, Button, Input, Label, Badge } from "reactstrap";
 
 
-
+//changed from function to class. Also changed name from UserProfileForm to plain Profile
+//May change all file names 
 class Profile extends React.Component {
   static contextType = UserContext;
 
