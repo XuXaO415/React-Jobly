@@ -12,66 +12,90 @@ import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useHistory } from 'react-router-dom'
-import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
-// import {
-//   Collapse,
-//   Navbar,
-//   NavbarToggler,
-//   NavbarBrand,
-//   Nav,
-//   NavItem,
-//   UncontrolledDropdown,
-//   DropdownToggle,
-//   DropdownMenu,
-//   DropdownItem,
-//   NavbarText,
-// } from 'reactstrap';
+import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse'
 
 class Navigation extends React.Component {
-  static contextType = UserContext;
+  static contextType = UserContext
 
   render() {
-    const currentUser = this.context;
+    const currentUser = this.context
 
     return (
-    <Navbar bg="light" expand="lg">
+      <Navbar bg="light" expand="lg">
+        <Container fluid>
+          <Navbar.Brand href="/">
+            <span>
+              <img
+                src={careerChoice}
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+                alt="job-image"
+              />
+            </span>
+            <span>Jobly</span>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{ maxHeight: '100px' }}
+              navbarScroll
+            >
+              {currentUser ? (
+                <Navbar.Collapse className="justify-content-center">
+                  {/* <Navbar.Text>Welcome back, {currentUser.firstName || currentUser.username}</Navbar.Text> */}
+                  <Nav.Link href="/companies">Companies</Nav.Link>
+                  <Nav.Link href="/jobs">Jobs</Nav.Link>
+                  <NavDropdown title="Profile" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/profile">
+                      Edit profile
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                  <Nav.Link href="/logout">Logout</Nav.Link>
+                </Navbar.Collapse>
+              ) : (
+                <Navbar.Collapse>
+                  <NavDropdown title="Login" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+                    <NavDropdown.Item href="/signup">Signup</NavDropdown.Item>
+                  </NavDropdown>
+                </Navbar.Collapse>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    )
+  }
+}
 
-      <Container fluid>
-        <Navbar.Brand href="/">
-        <span>
-        <img src={careerChoice}
-        width="30" height="30"
-        className="d-inline-block align-top"
-        alt="job-image"
-        />
-        </span>
-        <span>Jobly</span>
-
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
-          <Nav.Link href="companies" className="active">Companies</Nav.Link>
-          <Nav.Link href="jobs" className="active">Jobs</Nav.Link>
-          <Nav.Link href="login" className="active">Login</Nav.Link>
-          <Nav.Link href="signup" className="active">Signup</Nav.Link>
-          <Nav.Link href="logout" className="active">Logout</Nav.Link>
-            <NavDropdown title="Profile" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="userProfileForm">Edit Profile</NavDropdown.Item>
+{
+  /* {!currentUser ? 
+            <NavDropdown title="Login" id="basic-nav-dropdown">
+              <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+              <NavDropdown.Item href="/signup">Signup</NavDropdown.Item>
             </NavDropdown>
+           : ( 
+            //if currentUser is true, then show companies, jobs, profile and logout links 
+
+            <NavDropdown title="Profile" id="basic-nav-dropdown">
+              <NavDropdown.Item href="/profile">My Profile</NavDropdown.Item>
+              <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+            </NavDropdown>
+          )}
+          </Nav>
+          <Nav className="ml-auto" navbarScroll>
+            <Nav.Link href="companies" className="active">Companies</Nav.Link>
+            <Nav.Link href="jobs" className="active">Jobs</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    );
+    )
   }
+}  */
 }
-
-
 
 // function Navigation({ logout }) {
 //   const currentUser = useContext(UserContext)
@@ -152,4 +176,4 @@ class Navigation extends React.Component {
 //   );
 // }
 
-export default Navigation;
+export default Navigation
