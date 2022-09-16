@@ -28,7 +28,7 @@ class UserSignupForm extends React.Component {
       lastName: "",
       email: "",
       redirect: false,
-      signup: true
+      signup: true,
     };
 
     console.debug("UserSignupForm:", this.props);
@@ -51,13 +51,12 @@ class UserSignupForm extends React.Component {
     e.preventDefault();
     console.debug("handleSubmit formData=", this.state);
     const { username, password, firstName, lastName, email } = this.state;
-    const { signup } = this.context;
     // let token = null;
-    let token = await JoblyApi.login(username, password);
+    let token = await JoblyApi.login({username, password});
     if(this.state.signup) {
       try {
         token = await JoblyApi.signupUser({ username, password, firstName, lastName, email });
-        // this.context.setUser(token);
+        this.context.setUser(token);
         this.setState({ redirect: true });
         localStorage.setItem("token", token);
       } catch (err) {
@@ -67,15 +66,18 @@ class UserSignupForm extends React.Component {
       try {
         let token = await JoblyApi.login({ username, password });
         this.context.setUser(token);
-        this.setState({ redirect: true }); // redirect to home page
-        
-
+        this.setState({ redirect: true }); 
         localStorage.setItem("token", token);
       } catch (err) {
         console.error(err);
       }
     }
-  }
+} 
+
+
+
+
+
 
   renderSignupForm() {
     const { username, password, firstName, lastName, email } = this.state;
@@ -147,7 +149,7 @@ class UserSignupForm extends React.Component {
       return <Redirect to="/signup" />;
     }
     return (
-      <Container>
+      <Container className="mt-5">
       <h1>Sign Up</h1>
         <Row>
           <Card body>

@@ -1,4 +1,4 @@
-import React,{useState,useEffect,Component} from "react";
+import React,{useState,useEffect} from "react";
 import JoblyApi from "./JoblyApi";
 import {BrowserRouter} from "react-router-dom";
 import Navigation from "./Nav/Navigation";
@@ -13,23 +13,6 @@ export const TOKEN_STORAGE_ID="jobly-token";
 
 //   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_ID, null);
 
-
-  /* Make login, signup, and logout functions in the App component.
-
-By passing login, logout, and signup functions down to the login and signup forms and the navigation bar, 
-they’ll be able to call centralized functions to perform these processes.
-
-Add token as a piece of state in App, along with state for the currentUser.
-
-Create an effect triggered by a state change of the token: this should call the backend to get
- information on the newly-logged-in user and store it in the currentUser state.
-
-Expose the current user throughout the app with a context provider. 
-
-This will make it easy to refer to the current app in navigation, on pages, and so on.
-
-This would be an excellent place to use useContext, so you can store the current user’s info high up in your hierarchy, 
-like on the App component. */
 
 function App() {
   const [token, setToken] = useLocalStorage('token', null);
@@ -46,11 +29,12 @@ function App() {
       try {
         JoblyApi.token = token;
         let { username } = jwt.decode(token);
+        // let user = await JoblyApi.getCurrentUser(username).then(user => setCurrentUser(user));
         let user = await JoblyApi.getCurrentUser(username);
         setCurrentUser(user);
         setIsLoggedIn(false);
       } catch (err) {
-        console.error("App error", err);
+        console.error("App error:", err);
         setCurrentUser(null);
         setIsLoggedIn(false);
       }
@@ -81,7 +65,7 @@ function App() {
   function signup(data) {
     async function signupUser() {
       try {
-        let newToken  = await JoblyApi.signupUser(data); // returns a token
+        let newToken  = await JoblyApi.signupUser(data); 
         setToken(newToken); // sets the token in the state
         return { success: true, signup: true };
       } catch (err) {
@@ -97,10 +81,10 @@ function App() {
         setCurrentUser(null);
   }
 
-  function updateProfile(username, data={}) {
+  function updateProfile(username, data) {
     async function updateUser() {
       try {
-        let user = await JoblyApi.updateUser(username, data={});
+        let user = await JoblyApi.updateUser(username, data);
         setCurrentUser(user);
         return { success: true, update: true };
       } catch (err) {
