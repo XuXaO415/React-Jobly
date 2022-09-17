@@ -49,10 +49,7 @@ class Profile extends React.Component {
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.setState((st) => ({
-      ...st,
-      [name]: value,
-    }));
+    this.setState((st) => ({...st, [name]: value,}));
   }
 
   render() {
@@ -64,9 +61,9 @@ class Profile extends React.Component {
             <FormGroup>
               <Label for="username">Username</Label>
               <p>
-                <Badge pill bg="primary">
-                  {this.state.username}
-                </Badge>
+              <Badge pill bg="primary">
+              Hi, {this.context.currentUser.username}!
+              </Badge>
               </p>
               {/* <Input
               type="text"
