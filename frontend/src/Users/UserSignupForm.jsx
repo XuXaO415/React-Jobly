@@ -1,6 +1,6 @@
 import React, { useState, useContext, Component } from "react";
 // https://bobbyhadz.com/blog/react-export-usehistory-was-not-found-in-react-router-dom
-import { useHistory, Redirect, NavLink } from "react-router-dom";
+import { useHistory, Redirect, NavLink, history } from "react-router-dom";
 import UserContext from "./UserContext";
 import {
   Container,
@@ -36,6 +36,8 @@ class UserSignupForm extends React.Component {
     this.showUserSignup = this.showUserSignup.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+
   }
 
   showUserSignup() {
@@ -47,36 +49,25 @@ class UserSignupForm extends React.Component {
     this.setState({ [name]: value });
   }
 
+
   async handleSubmit(e) {
     e.preventDefault();
-    console.debug("handleSubmit formData=", this.state);
-    const { username, password, firstName, lastName, email } = this.state;
-    // let token = null;
-    let token = await JoblyApi.login({username, password});
-    if(this.state.signup) {
-      try {
+     const { username, password, firstName, lastName, email } = this.state;
+     let token = null;
+     try {
+      if(this.state.signup) {
         token = await JoblyApi.signupUser({ username, password, firstName, lastName, email });
-        this.context.setUser(token);
-        this.setState({ redirect: true });
-        localStorage.setItem("token", token);
-      } catch (err) {
+      } else {
+        token = await JoblyApi.login({ username, password });
+      }
+      this.context.setUser(token);
+      this.setState({ redirect: true });
+      this.props.history.push("/companies");
+      localStorage.setItem("token", token);
+     } catch (err) {
         console.error(err);
       }
-    } else {
-      try {
-        let token = await JoblyApi.login({ username, password });
-        this.context.setUser(token);
-        this.setState({ redirect: true }); 
-        localStorage.setItem("token", token);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-} 
-
-
-
-
+  } 
 
 
   renderSignupForm() {
