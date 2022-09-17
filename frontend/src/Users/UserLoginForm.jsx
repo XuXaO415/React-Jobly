@@ -28,15 +28,18 @@ function UserLoginForm({ login }) {
     e.preventDefault();
     let result = await login(formData);
     if (result.success) {
-      setSuccess(result.success)
-      setFormData(initialState)
-      React.history.push("/companies");
+      setSuccess(result.success);
+      setFormData(initialState);
+      // React.history.push("/companies");
     } else {
-      setError(result.err)
+      setError(result.err);
     }
   }
 
-  if (currentUser) return <Redirect to="/companies" />
+  // if (currentUser) return <Redirect to="/companies" />
+  if (UserContext) return <Redirect to="/companies" />
+
+ 
 
 
   // const handleSubmit = async (e) => {

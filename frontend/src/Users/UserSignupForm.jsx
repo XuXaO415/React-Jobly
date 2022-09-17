@@ -65,10 +65,13 @@ class UserSignupForm extends React.Component {
       this.setState({ redirect: true });
       this.props.history.push("/companies");
       localStorage.setItem("token", token);
-     } catch (err) {
+      } catch (err) {
         console.error(err);
       }
-  } 
+      if (UserContext) return <Redirect to="/companies" />
+    } 
+
+
 
 
   renderSignupForm() {
