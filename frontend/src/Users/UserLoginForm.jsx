@@ -1,5 +1,5 @@
 import React, { useState, useContext, Component } from 'react'
-import { useHistory, Redirect, NavLink, withRouter } from 'react-router-dom'
+import { useHistory, Redirect, NavLink } from 'react-router-dom'
 import UserContext from './UserContext'
 import JoblyApi from '../JoblyApi'
 import UserSignupForm from './UserSignupForm'
@@ -17,7 +17,7 @@ function UserLoginForm({ login }) {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const { currentUser } = useContext(UserContext)
-  const { history } = useHistory();
+  // const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -26,25 +26,40 @@ function UserLoginForm({ login }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // JoblyApi.login(formData)
-    let result = await JoblyApi.login(formData)
-    // let result = await JoblyApi.login(formData.username, formData.password);
-      .then((result) => {
-        //
-        if (result.success) {
-          setError(null);
-          login(result);
-
-          currentUser(result);
-          React.history.push(`/companies`);
-        } else {
-          setError(result.message);
-        }
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    let result = await login(formData);
+    if (result.success) {
+      setSuccess(result.success)
+      setFormData(initialState)
+      React.history.push("/companies");
+    } else {
+      setError(result.err)
+    }
   }
+
+  if (currentUser) return <Redirect to="/companies" />
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   // JoblyApi.login(formData)
+  //   let result = await JoblyApi.login(formData)
+  //   // let result = await JoblyApi.login(formData.username, formData.password);
+  //     .then((result) => {
+  //       console.log(result)
+  //       if (result.success) {
+  //         setError(null);
+  //         login(result);
+
+  //         currentUser(result);
+  //         // React.history.push(`/companies`);
+  //       } else {
+  //         setError(result.message);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setError(err.message);
+  //     });
+  // }
 
 
   return (
