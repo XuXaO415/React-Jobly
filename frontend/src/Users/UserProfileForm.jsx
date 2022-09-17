@@ -59,20 +59,21 @@ class Profile extends React.Component {
           <h1>Profile</h1>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="username">Username</Label>
+              <Label for="username">Username
+              <Badge pill bg="primary">    
+              {/* Hi, {this.context.currentUser.username}!  */}
+              </Badge>
+              </Label>
+           
+              
+              
               <p>
               <Badge pill bg="primary">
-              Hi, {this.context.currentUser.username}!
+              {/* Hi, {this.context.currentUser.username}! */}
+              {/* {this.context.currentUser.firstName} {this.context.currentUser.lastName} */}
               </Badge>
               </p>
-              {/* <Input
-              type="text"
-              className="form-control"
-              id="username"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
-            /> */}
+      
             </FormGroup>
 
             <FormGroup>
@@ -112,7 +113,7 @@ class Profile extends React.Component {
             </FormGroup>
 
             <FormGroup>
-              <Label for="password">Password</Label>
+              <Label for="password">Confirm password to make changes:</Label>
               <Input
                 type="password"
                 className="form-control"
@@ -122,7 +123,6 @@ class Profile extends React.Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
-
             <Button color="primary">Update Profile</Button>
           </Form>
         </div>
