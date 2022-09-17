@@ -1,33 +1,57 @@
-import { useState } from 'react';
+import React, {
+    useState,
+    useEffect,
+    Component,
+} from 'react';
 
-function useLocalStorage(key, initialValue) {
-    // useState to store the value in local storage
-    const [storedValue, setStoredValue] = useState(() => {
-            try {
-                // get the value from local storage
-                const item = window.localStorage.getItem(key);
-                // parse the value from local storage as JSON
-                return item ? JSON.parse(item) : initialValue;
-            } catch (err) {
-                // if there is an error, log it
-                console.error(err);
-                // and return the initial value
-                return initialValue;
+
+
+const useLocalStorage = (key, initialValue = null) => {
+    const firstValue = localStorage.getItem(key) || initialValue;
+    const [value, setValue] = useState(firstValue);
+
+    useEffect(() => {
+        console.debug("hooks useLocalStorage useEffect", "value=", value, "key=", key);
+        try {
+            if (value === null) {
+                console.debug(`${key} was removed`);
+                localStorage.removeItem(key);
+            } else {
+                console.debug(`Token is set to ${key}`);
+                console.log("key=", key);
+                localStorage.setItem(key, value);
             }
+        } catch (error) {
+            console.error(error);
         }
-        // set the value in local storage
-        , (value) => {
-            try {
-                // stringify the value to save it as a string
-                window.localStorage.setItem(key, JSON.stringify(value));
-            } catch (err) {
-                // if there is an error, log it
-                console.error(err);
-            }
-        }
-    );
-    // return the stored value and the setter function
-    return [storedValue, setStoredValue];
+    }, [key, value]);
+
+    return [value, setValue];
 }
 
+// function useLocalStorage(key, initialValue) {
+//     // useState to store the value in local storage
+//     const firstValue = localStorage.getItem(key) || initialValue;
+//     const [storedValue, setStoredValue] = useState(firstValue);
+//     // set the value in local storage
+
+//     React.useEffect(() => {
+//         localStorage.setItem(key, storedValue);
+//         console.debug("Hook is running by using useLocalStorage, useEffect", "storedValue=", storedValue);
+//         // [object is] key-value pair, if key is null, remove the key from local storage
+//         if (storedValue === null) {
+//             localStorage.removeItem(key);
+//         } else {
+
+//             localStorage.setItem(key, storedValue);
+//         }
+//     }, [key, storedValue]);
+//     // return the stored value and the setter function
+//     return [storedValue, setStoredValue];
+// }
+
 export default useLocalStorage;
+
+
+//https://javascript.info/localstorage
+//https://www.taniarascia.com/how-to-use-local-storage-with-javascript/
