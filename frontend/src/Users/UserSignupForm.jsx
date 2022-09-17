@@ -58,9 +58,10 @@ class UserSignupForm extends React.Component {
       if(this.state.signup) {
         token = await JoblyApi.signupUser({ username, password, firstName, lastName, email });
       } else {
+        // redirect user to login page if they already have an account
         token = await JoblyApi.login({ username, password });
       }
-      this.context.setUser(token);
+      this.UserContext.setUser(token);
       this.setState({ redirect: true });
       this.props.history.push("/companies");
       localStorage.setItem("token", token);
