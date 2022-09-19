@@ -16,24 +16,11 @@ import CompanyDetail from "./Company/CompanyDetails";
 import UserContext from './Users/UserContext';
 
 
-// function Routes() {
-//     return (
-//         <Router>
-//         <Route exact path="/" component={Homepage} />
-//         <Route path="/login" component={UserLogin} />
-//         <Route path="/signup" component={UserSignupForm} />
-//         <Route path="/jobs" component={JobList} />
-//         <Route path="/companies" component={CompanyList} />
-//         <Route path="/companies/:handle" component={CompanyDetail} />
-//         </Router>
-//     );
-// }
 //login and logout
 function Routes() {
     const [loggedInUser, setLoggedInUser] = React.useState(null);
-    const {
-        currentUser
-    } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
+    //useHistory, we can redirect the user to a different page
     const history = useHistory();
 
     async function handleLogout() {
@@ -48,16 +35,19 @@ function Routes() {
     }
 
     return (
-        // <Router>
-        //     <Route exact path="/" component={Homepage} />
-        //     <Route path="/login" component={UserLogin} />
-        //     <Route path="/signup" component={UserSignupForm} />
-        //     <Route path="/jobs" component={JobList} />
-        //     <Route path="/companies" component={CompanyList} />
-        //     <Route path="/companies/:handle" component={CompanyDetail} />
-        //     <Route path="/profile" component={UserProfileForm} />
-        // </Router>
+        <Router>
+        if (UserContext) return <Redirect to="/companies" />
+        <Route exact path="/" component={Homepage} />
+        <Route path="/login" render={props => <UserLogin {...props} handleLogin={handleLogin} />} />
+        <Route path="/signup" component={UserSignupForm} />
+        <Route path="/jobs" component={JobList} />
+        <Route path="/companies" component={CompanyList} />
+        <Route path="/companies/:handle" component={CompanyDetail} />
+        //pass props to user profile form and pass handleLogout function
+        <Route path="/profile" render={props => <UserProfileForm {...props} handleLogout={handleLogout} />} />
+        </Router>
     );
 }
+    
 
 export default Routes;
