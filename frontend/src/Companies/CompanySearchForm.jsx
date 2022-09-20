@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, Component } from "react";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -7,52 +7,85 @@ import Navbar from 'react-bootstrap/Navbar';
 
 
 
+// function CompanySearchForm({search, searchCompanies }) {
+//     const [searchTerm, setSearchTerm] = useState("");
 
-//Make your companies list have a search box, which filters companies to those matching the search 
-// (remember: there’s a backend endpoint for this!). Do this filtering 
-//in the backend — not by loading all companies and filtering in the front end!
+//     function handleChange(e) {
+//         setSearchTerm(e.target.value);
+//     }
 
-function CompanySearchForm({search, searchCompanies }) {
-    const [searchTerm, setSearchTerm] = useState("");
+//     function handleSubmit(e) {
+//         e.preventDefault();
+//         // if search term is empty or has at one search term that is not undefined 
+//         if (searchTerm === "" || searchTerm === undefined) {
+//             searchCompanies();
+//         } else {
+//             searchCompanies({name: searchTerm.trim()});
+//         }
+//     }
 
-    function handleChange(e) {
-        setSearchTerm(e.target.value);
+//     return (
+//         <Form onSubmit={handleSubmit}>
+//             <Form className="d-flex mb-4" > 
+//                 <Form.Control
+//                     type="search"
+//                     placeholder="Search"
+//                     onChange={handleChange}
+//                     value={searchTerm}
+//                 />
+//                 <Button variant="primary" type="submit">
+//                     Search
+//                 </Button>
+//             {/* </Container> */}
+//         </Form>
+//         </Form>
+
+//     );
+// }
+
+
+class CompanySearchForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchTerm: "",
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    function handleSubmit(e) {
+    handleChange(e) {
+        this.setState({ searchTerm: e.target.value });
+    }
+
+    handleSubmit(e) {
         e.preventDefault();
         // if search term is empty or has at one search term that is not undefined 
-        if (searchTerm === "" || searchTerm === undefined) {
-            searchCompanies();
+        if (this.state.searchTerm === "" || this.state.searchTerm === undefined) {
+            this.props.searchCompanies();
         } else {
-            searchCompanies({name: searchTerm.trim()});
+            this.props.searchCompanies({ name: this.state.searchTerm.trim() });
         }
     }
 
-    return (
-        <Form onSubmit={handleSubmit}>
-            {/* <Container maxwidth="sm"> */}
-            <Form className="d-flex mb-4" > 
-                <Form.Control
-                    type="search"
-                    placeholder="Enter search term..."
-                    onChange={handleChange}
-                    value={searchTerm}
-                />
-                <Button variant="primary" type="submit">
-                    Search
-                </Button>
-            {/* </Container> */}
-        </Form>
-        </Form>
-
-    );
+    render() {
+        return (
+            <Form onSubmit={this.handleSubmit}>
+                <Form className="d-flex mb-4" >
+                    <Form.Control
+                        type="search"
+                        placeholder="Search"
+                        onChange={this.handleChange}
+                        value={this.state.searchTerm}
+                    />
+                    <Button variant="primary" type="submit">
+                        Search
+                    </Button>
+                </Form>
+            </Form>
+        )
+    }
 }
-
-
-
-
-
 
 
 
