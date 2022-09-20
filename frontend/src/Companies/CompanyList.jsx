@@ -61,33 +61,25 @@ import CompanySearchForm from './CompanySearchForm';
 // }
 
 function CompanyList(){
-  const [companies, setCompanies] = useState([]);
+    const [companies, setCompanies] = useState([]);
 
-  useEffect(function getCompaniesOnMount() {
-    console.debug("CompanyList useEffect getCompaniesOnMount");
-    searchCompanies();
-  }, []);
+    useEffect(function getCompaniesOnMount() {
+      console.debug("CompanyList useEffect getCompaniesOnMount");
+      searchCompanies();
+    }, []);
 
-  async function searchCompanies(name) {
-    let companies = await JoblyApi.getCompanies(name);
-    setCompanies(companies);
-  } 
+    async function searchCompanies(name) {
+      let companies = await JoblyApi.getCompanies(name);
+      setCompanies(companies);
+    } 
 
-
-  if (companies.length === 0) return <p>Loading...</p>;
-
-  return (
-    <div className="CompanyList col-md-8 offset-md-2">
+    return companies.length < 1 || companies === undefined ? 
+    <p className="font-weight-bold text-center">
+    Sorry, no results were found!
+    <br />
+      <Button color="primary" href={`/companies`}>Back</Button>
+    </p> : <div className="CompanyList col-md-8 offset-md-2">
     <CompanySearchForm searchCompanies={searchCompanies} />
-   
-
-
-  {/* <div className="form-outline">
-      <input type="search" className="form-control" 
-      placeholder="Search" 
-      onChange={e => searchCompanies(e.target.value)} />
-    </div> */}
-
       <h1 className="font-weight-bold text-center">Companies</h1>
       <MDBCard> 
         {companies.slice(0, 25).map((company) => (
@@ -100,8 +92,7 @@ function CompanyList(){
           </MDBCardBody>
         ))}
       </MDBCard>
-    </div>
-  );
+    </div>;
 }
 
 
