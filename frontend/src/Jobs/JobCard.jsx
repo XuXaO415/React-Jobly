@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState, Component } from "react";
 import UserContext from "../Users/UserContext";
 import JoblyApi from "../JoblyApi";
 import { Card, CardColumns, CardSubtitle, CardBody, CardTitle, CardText, Container, Row } from "reactstrap";
@@ -68,9 +68,5 @@ function JobCard({ id, title, salary, equity, companyName, hasApplied=false, app
     );
 }
 
-
-
-
-        
 
 export default JobCard;

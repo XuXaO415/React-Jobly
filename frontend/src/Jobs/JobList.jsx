@@ -35,63 +35,12 @@ function JobList() {
       <JobCardList jobs={jobs} title={title} />
     </div>
   )
-
-
-
-
-
-
-
-
-  // async function getJobs() {
-  //   const jobs = await JoblyApi.getJobs();
-  //   setJobs(jobs);
-  // }
-  // useEffect(() => { 
-  //   getJobs();
-  // } , []);
-
-  // return (
-  //   <div className="JobList">
-  //     <CompanySearchForm />
-  //     <JobCardList jobs={jobs} />
-  //   </div>
-  // );
-
-
-
-
-
-
-
-
-
-
-
-
-  // useEffect(() => {
-  //   async function getJobs() {
-  //     try {
-  //       const jobs = await JoblyApi.getJobs();
-  //       setJobs(jobs);
-  //     } catch (err) {
-  //       setError(err);
-  //     }
-  //   }
-  //   getJobs();
-  // } , []);
-  // if (error) {
-  //   return <p> Error: {error.message} </p>;
-  // }
-  // return (
-  //   <div className="row"> 
-   
-  //     {jobs.map((job) => (
-  //       <JobCardList {jobs} />
-  //     ))}
-  //   </div>
-  // );
 }
+
+
+
+
+
 
 
 
