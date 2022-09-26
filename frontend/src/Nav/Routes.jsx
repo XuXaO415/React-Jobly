@@ -10,6 +10,8 @@ import UserSignupForm from "../Users/UserSignupForm";
 import UserProfileForm from "../Users/UserProfileForm";
 
 function Routes({ login, signup }) {
+  // console.debug("Routes", "login=", typeof login, "signup=", typeof signup);
+
   return (
     <Switch>
       <Route exact path="/">
