@@ -25,10 +25,12 @@ function App() {
 
 
   useEffect(function updateUserInfo() {
+    console.debug("App useEffect updateUserInfo", "token=", token);
     async function getCurrentUser() {
       try {
         JoblyApi.token = token;
         let { username } = jwt.decode(token);
+        //https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises
         // let user = await JoblyApi.getCurrentUser(username).then(user => setCurrentUser(user));
         let user = await JoblyApi.getCurrentUser(username);
         setCurrentUser(user);
@@ -59,7 +61,7 @@ function App() {
       }
     }
     setIsLoggedIn(true);
-    loginUser(); 
+    return loginUser(); 
   }
 
   function signup(data) {
@@ -112,8 +114,6 @@ function App() {
 
     searchCompanies();
 }
-
-
 
 
   // function searchCompanies(search={}) {

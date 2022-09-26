@@ -16,9 +16,8 @@ import { useHistory } from 'react-router-dom'
 class Navigation extends React.Component {
   static contextType = UserContext
 
-
-
   render() {
+    const logout = this.props.logout
     const currentUser = this.context
 
     return (
@@ -45,7 +44,7 @@ class Navigation extends React.Component {
             >
               {currentUser ? (
                 <Navbar.Collapse className="justify-content-center">
-                  {/* <Navbar.Text>Welcome back, {currentUser.firstName || currentUser.username}</Navbar.Text> */}
+                  <Navbar.Text>Welcome back, {currentUser.firstName || currentUser.username}</Navbar.Text>
                   {/* <Navbar.Text>Welcome back, {currentUser.username}!</Navbar.Text> */}
              
                   <Nav.Link href="/companies">Companies</Nav.Link>
@@ -55,7 +54,8 @@ class Navigation extends React.Component {
                       Edit profile
                     </NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link href="/logout">Logout</Nav.Link>
+                  {/* <Nav.Link href="/logout">Logout</Nav.Link> */}
+                <Nav.Link className="nav-link" to="/" onClick={logout}>Logout</Nav.Link>
                 </Navbar.Collapse>
               ) : (
                 <Navbar.Collapse>
