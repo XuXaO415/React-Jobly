@@ -12,129 +12,126 @@ import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useHistory } from 'react-router-dom'
-import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse'
 
-// class Navigation extends React.Component {
-//   static contextType = UserContext
+class Navigation extends React.Component {
+  static contextType = UserContext
 
-//   render() {
-//     const currentUser = this.context
+  render() {
+    const currentUser = this.context
 
-//     return (
-//       <Navbar bg="light" expand="lg">
-//         <Container fluid>
-//           <Navbar.Brand href="/">
-//             <span>
-//               <img
-//                 src={careerChoice}
-//                 width="30"
-//                 height="30"
-//                 className="d-inline-block align-top"
-//                 alt="job-image"
-//               />
-//             </span>
-//             <span>Jobly</span>
-//           </Navbar.Brand>
-//           <Navbar.Toggle aria-controls="navbarScroll" />
-//           <Navbar.Collapse id="navbarScroll">
-//             <Nav
-//               className="me-auto my-2 my-lg-0"
-//               style={{ maxHeight: '100px' }}
-//               navbarScroll
-//             >
-//               {currentUser ? (
-//                 <Navbar.Collapse className="justify-content-center">
-//                   {/* <Navbar.Text>Welcome back, {currentUser.firstName || currentUser.username}</Navbar.Text> */}
-//                   <Nav.Link href="/companies">Companies</Nav.Link>
-//                   <Nav.Link href="/jobs">Jobs</Nav.Link>
-//                   <NavDropdown title="Profile" id="basic-nav-dropdown">
-//                     <NavDropdown.Item href="/profile">
-//                       Edit profile
-//                     </NavDropdown.Item>
-//                   </NavDropdown>
-//                   <Nav.Link href="/logout">Logout</Nav.Link>
-//                 </Navbar.Collapse>
-//               ) : (
-//                 <Navbar.Collapse>
-//                   <NavDropdown title="Login" id="basic-nav-dropdown">
-//                     <NavDropdown.Item href="/login">Login</NavDropdown.Item>
-//                     <NavDropdown.Item href="/signup">Signup</NavDropdown.Item>
-//                   </NavDropdown>
-//                 </Navbar.Collapse>
-//               )}
-//             </Nav>
-//           </Navbar.Collapse>
-//         </Container>
-//       </Navbar>
-//     );
-//   }
-// }
-
-
-//If someone is logged in, show their username in the navigation, along with a way to log out. 
-//If no one is logged in, show a link to the login page and a link to the signup page.
-
-function Navigation({ logout }) {
-
-  const { currentUser } = useContext(UserContext);
-  console.debug('Navigation', 'logout=', typeof logout);
-
-  function loggedInNav() {
     return (
-      <Nav className="me-auto">
-        <NavLink className={NavLink} to="/companies">
-          Companies
-        </NavLink>
-        <NavLink className={NavLink} to="/jobs">
-          Jobs
-        </NavLink>
-        <NavLink className={NavLink} to="/profile">
-          Profile
-        </NavLink>
-        <Link to="/" onClick={logout}>
-          Log out {currentUser.username || currentUser.first_name}
-        </Link>
-      </Nav>
+      <Navbar bg="light" expand="lg">
+        <Container fluid>
+          <Navbar.Brand href="/">
+            <span>
+              <img
+                src={careerChoice}
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+                alt="job-image"
+              />
+            </span>
+            <span>Jobly</span>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{ maxHeight: '100px' }}
+              navbarScroll
+            >
+              {currentUser ? (
+                <Navbar.Collapse className="justify-content-center">
+                  <Navbar.Text>Welcome back, {currentUser.firstName || currentUser.username}</Navbar.Text>
+                  <Nav.Link href="/companies">Companies</Nav.Link>
+                  <Nav.Link href="/jobs">Jobs</Nav.Link>
+                  <NavDropdown title="Profile" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/profile">
+                      Edit profile
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                  <Nav.Link href="/logout">Logout</Nav.Link>
+                </Navbar.Collapse>
+              ) : (
+                <Navbar.Collapse>
+                  <NavDropdown title="Login" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+                    <NavDropdown.Item href="/signup">Signup</NavDropdown.Item>
+                  </NavDropdown>
+                </Navbar.Collapse>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     );
   }
-
-  function loggedOutNav() {
-    return (
-      <Nav className="me-auto">
-        <Nav.Link as={NavLink} to="/login">
-          Login
-        </Nav.Link>
-        <Nav.Link as={NavLink} to="/signup">
-          Signup
-        </Nav.Link>
-      </Nav>
-    );
-  }
-
-  return (
-    <Navbar bg="light" expand="lg">
-      <Container fluid>
-        <Navbar.Brand as={Link} to="/">
-          <span>
-            <img
-              src={careerChoice}
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-              alt="job-image"
-            />
-          </span>
-          <span>Jobly</span>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          {currentUser ? loggedInNav() : loggedOutNav()}
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
 }
 
 
 
-export default Navigation
+// function Navigation({ logout }) {
+
+//   const { currentUser } = useContext(UserContext);
+//   console.debug('Navigation', 'logout=', typeof logout);
+
+//   function loggedInNav() {
+//     return (
+//       <Nav className="me-auto">
+//         <NavLink className={NavLink} to="/companies">
+//           Companies
+//         </NavLink>
+//         <NavLink className={NavLink} to="/jobs">
+//           Jobs
+//         </NavLink>
+//         <NavLink className={NavLink} to="/profile">
+//           Profile
+//         </NavLink>
+//         <Link to="/" onClick={logout}>
+//           Log out {currentUser.username || currentUser.firstName}
+//         </Link>
+//       </Nav>
+//     );
+//   }
+
+//   function loggedOutNav() {
+//     return (
+//       <Nav className="me-auto">
+//         <Nav.Link as={NavLink} to="/login">
+//           Login
+//         </Nav.Link>
+//         <Nav.Link as={NavLink} to="/signup">
+//           Signup
+//         </Nav.Link>
+//       </Nav>
+//     );
+//   }
+
+//   return (
+//     <Navbar bg="light" expand="lg">
+//       <Container fluid>
+//         <Navbar.Brand as={Link} to="/">
+//           <span>
+//             <img
+//               src={careerChoice}
+//               width="30"
+//               height="30"
+//               className="d-inline-block align-top"
+//               alt="job-image"
+//             />
+//           </span>
+//           <span>Jobly</span>
+//         </Navbar.Brand>
+//         <Navbar.Toggle aria-controls="navbarScroll" />
+//         <Navbar.Collapse id="navbarScroll">
+//           {currentUser ? loggedInNav() : loggedOutNav()}
+//         </Navbar.Collapse>
+//       </Container>
+//     </Navbar>
+//   );
+// }
+
+
+
+export default Navigation;
