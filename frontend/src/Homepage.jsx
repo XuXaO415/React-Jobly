@@ -32,11 +32,12 @@ import './Homepage.css'
 function Homepage() {
   const { currentUser } = useContext(UserContext);
   const [message, setMessage] = useState('Welcome to Jobly');
+  console.debug("Homepage", "currentUser=", currentUser);
+  console.debug("Homepage", "message=", message);
 
   useEffect(() => {
     async function getMessage() {
       if (currentUser) {
-        console.debug('Homepage', 'loadMessage', 'currentUser');
         setMessage(`Welcome Back, ${currentUser.firstName || currentUser.username}!`);
       } else {
         setMessage('Welcome to Jobly');
@@ -51,7 +52,7 @@ function Homepage() {
         <h1 className="h1-welcome">Welcome to Jobly</h1>
         <p className="lead-paragraph">Your next dream job awaits you here.</p>
         {currentUser ? (
-          <h2>Welcome Back, {currentUser.firstName}!</h2>
+          <h2>Welcome Back, {currentUser.firstName || currentUser.username}!</h2>
         ) : (
           <center>
             <Link className="btn btn-primary m-3" to="/login">
