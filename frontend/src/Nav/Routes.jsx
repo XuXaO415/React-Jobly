@@ -10,9 +10,15 @@ import UserSignupForm from "../Users/UserSignupForm";
 import UserProfileForm from "../Users/UserProfileForm";
 
 function Routes({ login, signup }) {
-  console.debug("Routes", "login=", typeof login, "signup=", typeof signup);
+  console.debug(
+      "Routes",
+      `login=${typeof login}`,
+      `register=${typeof register}`,
+  );
+
 
   return (
+    <div className="pt-5">
     <Switch>
       <Route exact path="/">
         <Homepage />
@@ -37,6 +43,7 @@ function Routes({ login, signup }) {
       </Route>
       <Redirect to="/" />
     </Switch>
+    </div>
   );
 }
 

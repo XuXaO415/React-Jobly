@@ -13,9 +13,9 @@ function UserLoginForm({ login }) {
     username: '',
     password: '',
   }
-  const [formData, setFormData] = useState(initialState)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
+  const [formData, setFormData] = useState(initialState);
+  const [error, setError] = useState([]);
+  const [success, setSuccess] = useState(null);
   const { currentUser } = useContext(UserContext)
   // const history = useHistory();
 
@@ -27,7 +27,8 @@ function UserLoginForm({ login }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let result = await login(formData);
-    if (result.success) {
+    // if (result.success) {
+      if(result === success) {
       setSuccess(result.success);
       setFormData(initialState);
       // React.history.push("/companies");
@@ -36,8 +37,8 @@ function UserLoginForm({ login }) {
     }
   }
 
-  // if (currentUser) return <Redirect to="/companies" />
-  if (UserContext) return <Redirect to="/companies" />
+  // if (currentUser.username) return <Redirect to="/companies" />
+  // if (UserContext) return <Redirect to="/companies" />
 
  
 

@@ -34,7 +34,7 @@ function App() {
         // let user = await JoblyApi.getCurrentUser(username).then(user => setCurrentUser(user));
         let user = await JoblyApi.getCurrentUser(username);
         setCurrentUser(user);
-        setIsLoggedIn(false);
+        setIsLoggedIn(true);
       } catch (err) {
         console.error("App error:", err);
         setCurrentUser(null);
