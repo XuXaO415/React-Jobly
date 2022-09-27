@@ -12,60 +12,131 @@ import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useHistory } from 'react-router-dom'
+import './Navigation.css'
 
-//create a navbar component
 function Navigation({ logout }) {
   const { currentUser } = useContext(UserContext)
+  console.debug('Navigation', 'currentUser=', currentUser)
   const history = useHistory()
 
-  const handleLogin = () => {
-    history.push('/login')
+  function loggedInNav() {
+    return (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/companies">
+            Companies
+          </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/jobs">
+            Jobs
+          </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/profile">
+            Profile
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/" onClick={logout}>
+            Log out {currentUser.first_name || currentUser.username}
+          </Link>
+        </li>
+      </ul>
+    )
   }
 
-  const handleLogout = () => {
-    logout()
-    history.push('/')
+  function loggedOutNav() {
+    return (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/login">
+            Login
+          </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink className="nav-link" to="/signup">
+            Sign Up
+          </NavLink>
+        </li>
+      </ul>
+    )
   }
-
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Container>
-        <Navbar.Brand as={Link} to="/">
-          <img
-            src={careerChoice}
-            width="30"
-            height="30"
-            className="d-inline-block align-top"
-          />
-          Jobly
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/companies">
-              Companies
-            </Nav.Link>
-            <Nav.Link href='/jobs'>
-              Jobs
-            </Nav.Link>
-            <Nav.Link href="/profile">
-              Profile
-            </Nav.Link>
-            {currentUser ? (
-              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-            ) : (
-              <Nav.Link onClick={handleLogin}>
-                Login
-              </Nav.Link>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
+    <div className="Navigation">
+      <Navbar bg="light" expand="lg">
+        <Container>
+          <Navbar.Brand as={NavLink} to="/">
+            <img
+              src={careerChoice}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+              style={{ marginRight: '6px' }}
+            />
+            Jobly
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            {currentUser ? loggedInNav() : loggedOutNav()}
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </div>
+  )
 }
 
+// function Navigation({ logout }) {
+//   const { currentUser } = useContext(UserContext)
+//   const history = useHistory()
+
+//   const handleLogin = () => {
+//     history.push('/login')
+//   }
+
+//   const handleLogout = () => {
+//     logout()
+//     history.push('/')
+//   }
+
+//   return (
+//     <Navbar bg="light" expand="lg">
+//       <Container>
+//         <Navbar.Brand as={Link} to="/">
+//           <img
+//             src={careerChoice}
+//             width="30"
+//             height="30"
+//             className="d-inline-block align-top"
+//           />
+//           Jobly
+//         </Navbar.Brand>
+//         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+//         <Navbar.Collapse id="basic-navbar-nav">
+//           <Nav className="me-auto">
+//             <Nav.Link href="/companies">
+//               Companies
+//             </Nav.Link>
+//             <Nav.Link href='/jobs'>
+//               Jobs
+//             </Nav.Link>
+//             <Nav.Link href="/profile">
+//               Profile
+//             </Nav.Link>
+//             {currentUser ? (
+//               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+//             ) : (
+//               <Nav.Link onClick={handleLogin}>
+//                 Login
+//               </Nav.Link>
+//             )}
+//           </Nav>
+//         </Navbar.Collapse>
+//       </Container>
+//     </Navbar>
+//   );
+// }
 
 // class Navigation extends React.Component {
 //   static contextType = UserContext
@@ -126,69 +197,4 @@ function Navigation({ logout }) {
 //   }
 // }
 
-
-
-// function Navigation({ logout }) {
-
-//   const { currentUser } = useContext(UserContext);
-//   console.debug('Navigation', 'logout=', typeof logout);
-
-//   function loggedInNav() {
-//     return (
-//       <Nav className="me-auto">
-//         <NavLink className={NavLink} to="/companies">
-//           Companies
-//         </NavLink>
-//         <NavLink className={NavLink} to="/jobs">
-//           Jobs
-//         </NavLink>
-//         <NavLink className={NavLink} to="/profile">
-//           Profile
-//         </NavLink>
-//         <Link to="/" onClick={logout}>
-//           Log out {currentUser.username || currentUser.firstName}
-//         </Link>
-//       </Nav>
-//     );
-//   }
-
-//   function loggedOutNav() {
-//     return (
-//       <Nav className="me-auto">
-//         <Nav.Link as={NavLink} to="/login">
-//           Login
-//         </Nav.Link>
-//         <Nav.Link as={NavLink} to="/signup">
-//           Signup
-//         </Nav.Link>
-//       </Nav>
-//     );
-//   }
-
-//   return (
-//     <Navbar bg="light" expand="lg">
-//       <Container fluid>
-//         <Navbar.Brand as={Link} to="/">
-//           <span>
-//             <img
-//               src={careerChoice}
-//               width="30"
-//               height="30"
-//               className="d-inline-block align-top"
-//               alt="job-image"
-//             />
-//           </span>
-//           <span>Jobly</span>
-//         </Navbar.Brand>
-//         <Navbar.Toggle aria-controls="navbarScroll" />
-//         <Navbar.Collapse id="navbarScroll">
-//           {currentUser ? loggedInNav() : loggedOutNav()}
-//         </Navbar.Collapse>
-//       </Container>
-//     </Navbar>
-//   );
-// }
-
-
-
-export default Navigation;
+export default Navigation
