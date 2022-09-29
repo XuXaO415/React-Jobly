@@ -1,10 +1,11 @@
-import React, { useState, useContext, Component } from 'react'
+import React, { useState, useContext, Component, useEffect } from 'react'
 import { useHistory, Redirect, NavLink } from 'react-router-dom'
 import UserContext from './UserContext'
 import JoblyApi from '../JoblyApi'
 import UserSignupForm from './UserSignupForm'
 import { Form, FormGroup, Button, Input, Label } from 'reactstrap'
 import PropTypes from 'prop-types'
+
 
 
 
@@ -16,8 +17,32 @@ function UserLoginForm({ login }) {
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState([]);
   const [success, setSuccess] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useContext(UserContext);
-  // const history = useHistory();
+  const history = useHistory();
+
+
+// added this function so that the user can be redirected to the companies after logging in
+  useEffect(() => {
+    if (currentUser) {
+      history.push('/companies');
+    }
+  }, [currentUser, history]);
+
+
+  //only log console.debug once when component mounts
+  // React.useEffect(() => {
+  //   console.debug('UserLoginForm', 'login=', typeof login, 'formData=', formData);
+  // }, []);
+
+
+  // console.debug(
+  //   'UserLoginForm',
+  //   'login=', typeof login,
+  //   'formData=', formData,
+  //   'currentUser=', currentUser,
+  //   'error=', error,
+  // );
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -31,7 +56,7 @@ function UserLoginForm({ login }) {
     if(result===success) {
       setSuccess(result.success);
       setFormData(initialState);
-      // React.history.push("/companies");
+      history.push("/companies");
     } else {
       setError(result.err);
     }
