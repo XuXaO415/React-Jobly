@@ -55,7 +55,7 @@ function App() {
         // localStorage.setItem(newToken); // sets the token in local storage
         setToken(newToken); // sets the token in the state
         // return { success: true, login: true };
-        return { success: true, setIsLoading: true, isLoggedIn: true };
+        return { success: true, setIsLoading: true, isLoggedIn: true, login: true };
       } catch (err) {
         return { success: false, login: false, err };
       }
@@ -128,9 +128,25 @@ function App() {
 
   // }
 
+  // return (
+  //   <BrowserRouter>
+  //     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+  //       <Navigation logout={logout} />
+  //       <Routes
+  //         login={login}
+  //         signup={signup}
+  //         updateProfile={updateProfile}
+  //         searchCompanies={searchCompanies}
+  //       />
+  //     </UserContext.Provider>
+  //   </BrowserRouter>
+  // );
+
+  //have links route to the correct components
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+      <div className="App">
         <Navigation logout={logout} />
         <Routes
           login={login}
@@ -138,9 +154,12 @@ function App() {
           updateProfile={updateProfile}
           searchCompanies={searchCompanies}
         />
+      </div>
       </UserContext.Provider>
     </BrowserRouter>
   );
+  
+
 }
 
 export default App;
