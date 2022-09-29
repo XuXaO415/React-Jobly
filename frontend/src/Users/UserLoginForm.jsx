@@ -16,19 +16,19 @@ function UserLoginForm({ login }) {
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState([]);
   const [success, setSuccess] = useState(null);
-  const { currentUser } = useContext(UserContext)
+  const { currentUser } = useContext(UserContext);
   // const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
+    setFormData({ ...formData, [name]: value });
   }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    let result = await login(formData);
+    let result=await login(formData);
     // if (result.success) {
-      if(result === success) {
+    if(result===success) {
       setSuccess(result.success);
       setFormData(initialState);
       // React.history.push("/companies");
@@ -40,30 +40,6 @@ function UserLoginForm({ login }) {
   // if (currentUser.username) return <Redirect to="/companies" />
   // if (UserContext) return <Redirect to="/companies" />
 
- 
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // JoblyApi.login(formData)
-  //   let result = await JoblyApi.login(formData)
-  //   // let result = await JoblyApi.login(formData.username, formData.password);
-  //     .then((result) => {
-  //       console.log(result)
-  //       if (result.success) {
-  //         setError(null);
-  //         login(result);
-
-  //         currentUser(result);
-  //         // React.history.push(`/companies`);
-  //       } else {
-  //         setError(result.message);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setError(err.message);
-  //     });
-  // }
 
 
   return (

@@ -84,7 +84,7 @@ function Navigation({ logout }) {
         </Container>
       </Navbar>
     </div>
-  )
+  );
 }
 
 // function Navigation({ logout }) {
@@ -197,4 +197,4 @@ function Navigation({ logout }) {
 //   }
 // }
 
-export default Navigation
+export default Navigation;
