@@ -53,10 +53,15 @@ function PrivateRoutes({ exact, path, children }) {
       "currentUser=", currentUser,
   );
 
-  if (currentUser === null) {
-    return <Redirect to="/login" />;
-  }
+  /* If there's no current user, redirect to /login.
+    This is a safe guard that prevents users from accessing routes. 
+    If this wasn't here, a user could manually type in a URL to access a route.
+    This would cause an error because the API would return a 401 Unauthorized.
+     */
 
+  // if (!currentUser) {
+  //   return <Redirect to="/login" />;
+  // }
 
   return (
       <Route exact={exact} path={path}>
