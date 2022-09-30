@@ -31,9 +31,9 @@ function UserLoginForm({ login }) {
 
 
   //only log console.debug once when component mounts
-  // React.useEffect(() => {
-  //   console.debug('UserLoginForm', 'login=', typeof login, 'formData=', formData);
-  // }, []);
+  React.useEffect(() => {
+    console.debug('UserLoginForm', 'login=', typeof login, 'formData=', formData);
+  }, []);
 
 
   // console.debug(
@@ -44,16 +44,11 @@ function UserLoginForm({ login }) {
   //   'error=', error,
   // );
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value });
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    let result=await login(formData);
-    // if (result.success) {
-    if(result===success) {
+    let result = await login(formData);
+    if(result === success) {
       setSuccess(result.success);
       setFormData(initialState);
       history.push("/companies");
@@ -62,10 +57,15 @@ function UserLoginForm({ login }) {
     }
   }
 
-  // if (currentUser.username) return <Redirect to="/companies" />
-  // if (UserContext) return <Redirect to="/companies" />
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target
+  //   setFormData({ ...formData, [name]: value });
+  // }
 
-
+  function handleChange(e) {
+    const {name, value} = e.target;
+    setFormData(data => ({ ...data, [name]: value }));
+  }
 
   return (
     <div className="LoginForm">
