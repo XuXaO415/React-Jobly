@@ -22,18 +22,12 @@ function UserLoginForm({ login }) {
   const history = useHistory();
 
 
-// added this function so that the user can be redirected to the companies after logging in
-  useEffect(() => {
-    if (currentUser) {
-      history.push('/companies');
-    }
-  }, [currentUser, history]);
 
 
-  //only log console.debug once when component mounts
-  React.useEffect(() => {
-    console.debug('UserLoginForm', 'login=', typeof login, 'formData=', formData);
-  }, []);
+  // logs console.debug once when component mounts. Is this how you would do it???
+  // React.useEffect(() => {
+  //   console.debug('UserLoginForm', 'login=', typeof login, 'formData=', formData);
+  // }, []);
 
 
   // console.debug(
@@ -64,8 +58,16 @@ function UserLoginForm({ login }) {
 
   function handleChange(e) {
     const {name, value} = e.target;
-    setFormData(data => ({ ...data, [name]: value }));
+    setFormData(formData => ({ ...formData, [name]: value }));
   }
+
+  // added this function so that the user can be redirected to the companies after logging in
+  useEffect(() => {
+    if (currentUser) {
+      history.push('/companies');
+    }
+  }, [currentUser, history]);
+
 
   return (
     <div className="LoginForm">
