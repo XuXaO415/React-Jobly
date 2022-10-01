@@ -25,9 +25,9 @@ function UserLoginForm({ login }) {
 
 
   // logs console.debug once when component mounts. Is this how you would do it???
-  // React.useEffect(() => {
-  //   console.debug('UserLoginForm', 'login=', typeof login, 'formData=', formData);
-  // }, []);
+  React.useEffect(() => {
+    console.debug('UserLoginForm', 'login=', typeof login, 'formData=', formData);
+  }, []);
 
 
   // console.debug(
