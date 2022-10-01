@@ -5,35 +5,11 @@ import JoblyApi from './JoblyApi'
 import './Homepage.css'
 
 
-// function Homepage() {
-//   const { currentUser } = useContext(UserContext);
-//   console.debug("Homepage", "currentUser=", currentUser);
-
-
-//   return (
-//     <div className="Homepage">
-//       <div className="container text-center">
-//         <h1 className="mb-4 font-weight-bold">Jobly</h1>
-//         <p className="lead">Your next dream job awaits you here.</p>
-//         {currentUser ? (
-//           <h2>Welcome Back, {currentUser.firstName || currentUser.username}!</h2>
-//         ) : (
-//             <p>
-//               <Link className="btn btn-primary font-weight-bold m-3" to="/login">Log in</Link>
-//               <Link className="btn btn-primary font-weight-bold m-3" to="/signup">Sign up</Link>
-//             </p>
-//           )}
-//       </div>
-//     </div>
-//     );
-// }
-
-
 function Homepage() {
   const { currentUser } = useContext(UserContext);
   const [message, setMessage] = useState('Welcome to Jobly');
-  console.debug("Homepage", "currentUser=", currentUser);
-  console.debug("Homepage", "message=", message);
+  console.debug("Homepage", "currentUser =", currentUser);
+  console.debug("Homepage", "message =", Boolean(message), "if true, showing message =", message );
 
   // useEffect(() => {
   //   async function getMessage() {
