@@ -3,6 +3,7 @@
 import React, { Component, useState, useEffect, useContext } from "react";
 import UserContext from "./UserContext";
 import JoblyApi from "../JoblyApi";
+import { Redirect } from "react-router-dom";
 import Alert from "../Common/Alert";
 import { Form, FormGroup, Button, Input, Label, Badge } from "reactstrap";
 
@@ -261,22 +262,38 @@ import { Form, FormGroup, Button, Input, Label, Badge } from "reactstrap";
 // Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components
 
 class Profile extends React.Component {
-  // static contextType = UserContext;
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
-      username: this.props.currentUser.username,
-      firstName: this.props.currentUser.firstName,
-      lastName: this.props.currentUser.lastName,
-      email: this.props.currentUser.email,
+     
+      // username: this.props.username,
+  //     firstName: this.props.firstName,
+  //     lastName: this.props.lastName,
+  //     email: this.props.email,
+  //     password: "",
+  //     errors: [],
+  //   };
+
+
+  //   this.handleChange = this.handleChange.bind(this);
+  //   this.handleSubmit = this.handleSubmit.bind(this);
+  // }
+
+
+      username: this.props.username,
+      firstName: this.props.firstName,
+      lastName: this.props.lastName,
+      email: this.props.email,
       password: "",
       errors: [],
-      
+
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    
-  }
+  } 
+
+
 
   handleChange(e) {
     this.setState({
@@ -287,14 +304,15 @@ class Profile extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     let profileData = {
-      // username: this.state.username,
+      username: this.state.username,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,
       password: this.state.password,
     };
 
-    let username = this.props.currentUser.username;
+    // let username = this.props.currentUser.username;
+    let username = this.context.username;
     let updatedUser;
     try {
       updatedUser = await JoblyApi.updateUser(username, profileData);
@@ -316,7 +334,9 @@ class Profile extends React.Component {
             <FormGroup>
               <Label for="username">Username</Label>
               <Badge pill bg="primary">
-                {this.props.currentUser.username}
+                {this.props.username}
+                {/* {this.props.currentUser.username} */}
+                {this.context.username}
               </Badge>
             </FormGroup>
 
@@ -362,7 +382,8 @@ class Profile extends React.Component {
                 className="form-control" 
                 id="profile-password"
                 name="password" 
-                value={this.state.password} 
+                value={this.state.password}
+                valid={this.state.password.length > 0} 
                 onChange={this.handleChange} 
                 />
                 </FormGroup>
@@ -374,5 +395,6 @@ class Profile extends React.Component {
     );
 }
 }
+
 
 export default Profile; 

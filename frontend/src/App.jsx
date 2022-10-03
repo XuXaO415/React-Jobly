@@ -75,7 +75,7 @@ function App() {
       }
     }
     setIsLoggedIn(true);
-    signupUser();
+    return signupUser();
   }
 
   function logout() {
@@ -83,18 +83,29 @@ function App() {
     setCurrentUser(null);
   }
 
-  function updateProfile(username, data) {
-    async function updateUser() {
-      try {
-        let user = await JoblyApi.updateUser(username, data);
-        setCurrentUser(user);
-        return { success: true, update: true };
-      } catch (err) {
-        return { success: false, update: false, err };
-      }
-    }
-    updateUser();
+  // function updateProfile(username, data) {
+  //   async function updateUser() {
+  //     try {
+  //       let user = await JoblyApi.updateUser(username, data);
+  //       setCurrentUser(user);
+  //       return { success: true, update: true };
+  //     } catch (err) {
+  //       return { success: false, update: false, err };
+  //     }
+  //   }
+  //   return updateUser();
+  // }
+
+async function updateProfile(username, data) {
+    try {
+      let user = await JoblyApi.updateUser(username, data);
+      setCurrentUser(user);
+      return { success: true, update: true };
+    } catch (err) {
+      return { success: false, update: false, err };
+    } 
   }
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -111,7 +122,7 @@ function App() {
       }
     }
 
-    searchCompanies();
+    return searchCompanies();
   }
 
   // function searchCompanies(search={}) {
