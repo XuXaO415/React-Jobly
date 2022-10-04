@@ -261,140 +261,245 @@ import { Form, FormGroup, Button, Input, Label, Badge } from "reactstrap";
 // This is likely caused by the value changing from undefined to a defined value, which should not happen.
 // Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components
 
-class Profile extends React.Component {
-  static contextType = UserContext;
-  constructor(props) {
-    super(props);
-    this.state = {
+// class Profile extends React.Component {
+//   static contextType = UserContext;
+//   constructor(props) {
+//     super(props);
+//     this.state = {
      
-      // username: this.props.username,
-  //     firstName: this.props.firstName,
-  //     lastName: this.props.lastName,
-  //     email: this.props.email,
-  //     password: "",
-  //     errors: [],
-  //   };
+//       // username: this.props.username,
+//   //     firstName: this.props.firstName,
+//   //     lastName: this.props.lastName,
+//   //     email: this.props.email,
+//   //     password: "",
+//   //     errors: [],
+//   //   };
 
 
-  //   this.handleChange = this.handleChange.bind(this);
-  //   this.handleSubmit = this.handleSubmit.bind(this);
-  // }
+//   //   this.handleChange = this.handleChange.bind(this);
+//   //   this.handleSubmit = this.handleSubmit.bind(this);
+//   // }
 
 
-      username: this.props.username,
-      firstName: this.props.firstName,
-      lastName: this.props.lastName,
-      email: this.props.email,
-      password: "",
-      errors: [],
+//       username: this.props.username,
+//       firstName: this.props.firstName,
+//       lastName: this.props.lastName,
+//       email: this.props.email,
+//       password: "",
+//       errors: [],
 
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  } 
+//     };
+//     this.handleChange = this.handleChange.bind(this);
+//     this.handleSubmit = this.handleSubmit.bind(this);
+//   } 
 
 
 
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  }
+//   handleChange(e) {
+//     this.setState({
+//       [e.target.name]: e.target.value,
+//     });
+//   }
 
-  async handleSubmit(e) {
+//   async handleSubmit(e) {
+//     e.preventDefault();
+//     let profileData = {
+//       username: this.state.username,
+//       firstName: this.state.firstName,
+//       lastName: this.state.lastName,
+//       email: this.state.email,
+//       password: this.state.password,
+//     };
+
+//     // let username = this.props.currentUser.username;
+//     let username = this.context.username;
+//     let updatedUser;
+//     try {
+//       updatedUser = await JoblyApi.updateUser(username, profileData);
+//     } catch (errors) {
+//       this.setState({ errors });
+//       return;
+//     }
+
+//     this.setState({ errors: [] });
+//     this.props.updateProfile(updatedUser);
+//   }
+
+//   render() {
+//     return (
+//       <div className="col-md-6 col-lg-4 offset-md-3 offset-lg-4">
+//         <div className="Profile">
+//           <h1>Profile</h1>
+//           <Form onSubmit={this.handleSubmit}>
+//             <FormGroup>
+//               <Label for="username">Username</Label>
+//               <Badge pill bg="primary">
+//                 {this.props.username}
+//                 {/* {this.props.currentUser.username} */}
+//                 {this.context.username}
+//               </Badge>
+//             </FormGroup>
+
+//             <FormGroup>
+//               <Label for="firstName">First Name</Label>
+//               <Input
+//                 type="text"
+//                 className="form-control"
+//                 id="firstName"
+//                 name="firstName"
+//                 value={this.state.firstName}
+//                 onChange={this.handleChange}
+//               />
+//             </FormGroup>
+
+//             <FormGroup>
+//               <Label for="lastName">Last Name</Label>
+//               <Input
+//                 type="text"
+//                 className="form-control"
+//                 id="lastName"
+//                 name="lastName"
+//                 value={this.state.lastName}
+//                 onChange={this.handleChange}
+//               />
+//             </FormGroup>
+
+//             <FormGroup>
+//               <Label for="email">Email</Label>
+//               <Input
+//                 type="email"
+//                 className="form-control"
+//                 id="email"
+//                 name="email"
+//                 value={this.state.email}
+//                 onChange={this.handleChange}
+//               />
+//             </FormGroup>
+//             <FormGroup>
+//               <Label for ="password">Confirm password to make changes:</Label>
+//               <Input
+//                 type="password" 
+//                 className="form-control" 
+//                 id="profile-password"
+//                 name="password" 
+//                 value={this.state.password}
+//                 valid={this.state.password.length > 0} 
+//                 onChange={this.handleChange} 
+//                 />
+//                 </FormGroup>
+//                 {this.state.errors.length ? <Alert type="danger" messages={this.state.errors} /> : null}
+//             <Button color="primary">Save Changes</Button>
+//           </Form>
+//         </div>
+//       </div>
+//     );
+// }
+// }
+
+const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
+  const { currentUser } = useContext(UserContext);
+  const [formData, setFormData] = useState({
+    username: username,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: "",
+  });
+  const [formErrors, setFormErrors] = useState([]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((f) => ({ ...f, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let profileData = {
-      username: this.state.username,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      password: this.state.password,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
     };
-
-    // let username = this.props.currentUser.username;
-    let username = this.context.username;
+    let username = currentUser.username;
     let updatedUser;
     try {
       updatedUser = await JoblyApi.updateUser(username, profileData);
     } catch (errors) {
-      this.setState({ errors });
+      setFormErrors(errors);
       return;
     }
 
-    this.setState({ errors: [] });
-    this.props.updateProfile(updatedUser);
-  }
+    setFormErrors([]);
+    updateProfile(updatedUser);
+  };
 
-  render() {
-    return (
-      <div className="col-md-6 col-lg-4 offset-md-3 offset-lg-4">
-        <div className="Profile">
-          <h1>Profile</h1>
-          <Form onSubmit={this.handleSubmit}>
-            <FormGroup>
-              <Label for="username">Username</Label>
-              <Badge pill bg="primary">
-                {this.props.username}
-                {/* {this.props.currentUser.username} */}
-                {this.context.username}
-              </Badge>
-            </FormGroup>
+  return (
+    <div className="col-md-6 col-lg-4 offset-md-3 offset-lg-4">
+      <div className="Profile">
+        <h1>Profile</h1>
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label for="username">Username</Label>
+            <Badge pill bg="primary">
+              {username}
+            </Badge>
+          </FormGroup>
 
-            <FormGroup>
-              <Label for="firstName">First Name</Label>
-              <Input
-                type="text"
-                className="form-control"
-                id="firstName"
-                name="firstName"
-                value={this.state.firstName}
-                onChange={this.handleChange}
+          <FormGroup>
+            <Label for="firstName">First Name</Label>
+            <Input
+              type="text"
+              className="form-control"
+              id="profile-firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label for="lastName">Last Name</Label>
+            <Input
+              type="text"
+              className="form-control"
+              id="profile-lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label for="email">Email</Label>
+            <Input
+              type="email"
+              className="form-control"
+              id="profile-email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="password">Confirm password to make changes:</Label>
+            <Input
+              type="password"
+              className="form-control"
+              id="profile-password"
+              name="password" 
+              value={formData.password} 
+              valid={formData.password.length > 0}
+              onChange={handleChange} 
               />
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="lastName">Last Name</Label>
-              <Input
-                type="text"
-                className="form-control"
-                id="lastName"
-                name="lastName"
-                value={this.state.lastName}
-                onChange={this.handleChange}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="email">Email</Label>
-              <Input
-                type="email"
-                className="form-control"
-                id="email"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for ="password">Confirm password to make changes:</Label>
-              <Input
-                type="password" 
-                className="form-control" 
-                id="profile-password"
-                name="password" 
-                value={this.state.password}
-                valid={this.state.password.length > 0} 
-                onChange={this.handleChange} 
-                />
-                </FormGroup>
-                {this.state.errors.length ? <Alert type="danger" messages={this.state.errors} /> : null}
-            <Button color="primary">Save Changes</Button>
-          </Form>
-        </div>
+              </FormGroup> 
+              {formErrors.length ? <Alert type="danger" messages={formErrors} /> : null}
+          <Button color="primary">Save Changes</Button>
+        </Form>
       </div>
-    );
+    </div>
+  );
 }
-}
+
 
 
 export default Profile; 
