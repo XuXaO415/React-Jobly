@@ -397,7 +397,7 @@ import { Form, FormGroup, Button, Input, Label, Badge } from "reactstrap";
 // }
 
 const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const [formData, setFormData] = useState({
     username: username,
     firstName: firstName,
@@ -405,7 +405,11 @@ const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
     email: email,
     password: "",
   });
+
+
+  const [errors, setErrors] = useState([]);
   const [formErrors, setFormErrors] = useState([]);
+  const [updated, setUpdated] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -428,9 +432,11 @@ const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
       setFormErrors(errors);
       return;
     }
-
     setFormErrors([]);
-    updateProfile(updatedUser);
+    setFormData((f) => ({ ...f, password: "" }));
+    // updateProfile(updatedUser);
+    setCurrentUser(updatedUser);
+    setUpdated(true);
   };
 
   return (
@@ -439,14 +445,17 @@ const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
         <h1>Profile</h1>
         <Form onSubmit={handleSubmit}>
           <FormGroup>
-            <Label for="username">Username</Label>
+            <Label for="profile-username">Username </Label>
+            <p> 
             <Badge pill bg="primary">
-              {username}
+              {/* {currentUser.username || firstName}
+              {formData.username} */}
             </Badge>
+            </p>
           </FormGroup>
 
           <FormGroup>
-            <Label for="firstName">First Name</Label>
+            <Label for="profile-firstName">First Name</Label>
             <Input
               type="text"
               className="form-control"
@@ -458,7 +467,7 @@ const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
           </FormGroup>
 
           <FormGroup>
-            <Label for="lastName">Last Name</Label>
+            <Label for="profile-lastName">Last Name</Label>
             <Input
               type="text"
               className="form-control"
@@ -470,7 +479,7 @@ const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
           </FormGroup>
 
           <FormGroup>
-            <Label for="email">Email</Label>
+            <Label for="profile-email">Email</Label>
             <Input
               type="email"
               className="form-control"
@@ -481,18 +490,21 @@ const Profile = ({ username, firstName, lastName, email, updateProfile }) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="password">Confirm password to make changes:</Label>
+            <Label for="profile-password">Confirm password to make changes:</Label>
             <Input
               type="password"
               className="form-control"
               id="profile-password"
               name="password" 
               value={formData.password} 
-              valid={formData.password.length > 0}
+              // valid={formData.password.length > 5}
               onChange={handleChange} 
               />
               </FormGroup> 
               {formErrors.length ? <Alert type="danger" messages={formErrors} /> : null}
+              {updated ? <Alert type="success" flash messages={["Your profile updated successfully."]} /> : null}
+              {errors.length ? <Alert type="danger" messages={errors} /> : null}
+              
           <Button color="primary">Save Changes</Button>
         </Form>
       </div>
