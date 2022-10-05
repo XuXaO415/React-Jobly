@@ -16,6 +16,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [applicationsIds, setApplicationsIds] = useState(new Set([]));
 
   console.debug("App", { token, currentUser, isLoading, isLoggedIn });
 
@@ -32,8 +33,10 @@ function App() {
           setCurrentUser(user);
           // when the current user is identified, set the isLoggedIn state to true
           setIsLoggedIn(true);
+          // set the applicationsIds state to the current user's applications
+          setApplicationsIds(new Set(user.applications));
         } catch (err) {
-          console.error(`App error:`, err);
+          console.error(`App error: problem loading`, err);
           setCurrentUser(null);
           setIsLoggedIn(false);
         }
@@ -106,7 +109,6 @@ async function updateProfile(username, data) {
     } 
   }
 
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -124,6 +126,21 @@ async function updateProfile(username, data) {
 
     return searchCompanies();
   }
+
+//check to see if user applied to job
+  function hasAppliedToJob(id) {
+    return currentUser.applications.includes(id);
+  }
+
+  function applyForJob(id) {
+    if (hasAppliedToJob(id)) return;
+    try{
+      JoblyApi.applyForJob(currentUser.username, id);
+      setApplicationsIds(new Set([...applicationsIds, id]));
+    } catch (err) {
+      return { success: false, apply: false, err };
+    }
+  } 
 
   // function searchCompanies(search={}) {
   //   async function searchCompanies() {
@@ -156,7 +173,7 @@ async function updateProfile(username, data) {
   //have links route to the correct components
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+      <UserContext.Provider value={{ currentUser, setCurrentUser, hasAppliedToJob, applyForJob }}>
       <div className="App">
         <Navigation logout={logout} />
         <Routes
