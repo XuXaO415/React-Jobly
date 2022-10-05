@@ -45,25 +45,17 @@ class JoblyApi {
 
 
     /** Get current user */
-    static async getCurrentUser(username) {
-        let res = await this.request(`users/${username}`);
+    static async getCurrentUser(username, data) {
+        let res = await this.request(`users/${username}`, data);
         return res.user;
     }
-
-    // static async signupUser(userDetails) {
-    //     let res = await this.request(`users`, userDetails, "post");
-    //     return res.token;
-    // }
-
 
     static async signupUser(data) {
         let res = await this.request(`auth/register`, data, "post");
         return res.token;
     }
 
-    //DONE: Create function to login user
- 
-    //login user
+
     static async login({ username, password }) {
         let res = await this.request(`auth/token`, {
             username,
@@ -72,13 +64,26 @@ class JoblyApi {
         return res.token;
     }
 
+    // static async login(data) {
+    //     let res = await this.request(`auth/token`, data, "post");
+    //     return res.token;
+    // }
 
-    //DONE: Create function that updates a users profile
+
+    // create user using data and returns token
+    static async createUser(data) {
+        let res = await this.request(`users`, data, "post");
+        return res.token;
+    }
 
     static async updateUser(username, data) {
+        // let currentUser = await this.getCurrentUser(username, data);
         let res = await this.request(`users/${username}`, data, "patch");
+        // return { ...currentUser, ...res.user };
         return res.user;
     }
+
+  
     /** Company */
 
     //DONE: Create function to get company details by handle */
@@ -93,16 +98,10 @@ class JoblyApi {
     }
 
     static async getCompanies(name) {
-        let res = await this.request(`companies`, {
-            name
-        });
+        let res = await this.request(`companies`, { name });
         return res.companies;
     }
 
-    // static async filterCompanies(filter) {
-    //     let res = await this.request(`companies`, filter);
-    //     return res.companies;
-    // }
 
     // reference findAll search filter from backend company model
     static async filterCompanies(searchFilters = {}) {
@@ -121,13 +120,15 @@ class JoblyApi {
         return res.job;
     }
 
-    static async applyForJob(id, data) {
-        let res = await this.request(`jobs/${id}/apply`, data, "post");
+    static async applyForJob(username, id) {
+        let res = await this.request(`users/${username}/jobs/${id}`, {}, "post");
         return res.job;
     }
 
-  
-
+    static async unapplyForJob(id, data) {
+        let res = await this.request(`jobs/${id}/unapply`, data, "post");
+        return res.job;
+    }
 }
 
 // for now, put token ("testuser" / "password" on class)

@@ -36,7 +36,7 @@ function Routes() {
 
     return (
         <Router>
-        if (UserContext) return <Redirect to="/companies" />
+        {/* if (UserContext) return <Redirect to="/companies" /> */}
         <Route exact path="/" component={Homepage} />
         <Route path="/login" render={props => <UserLogin {...props} handleLogin={handleLogin} />} />
         <Route path="/signup" component={UserSignupForm} />

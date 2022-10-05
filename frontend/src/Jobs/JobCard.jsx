@@ -52,7 +52,6 @@ function JobCard({ id, title, salary, equity, companyName, hasApplied=false, app
     return (
         <div>
             <Card body>
-                {/* <CardTitle>{title}</CardTitle> */}
                 <h6 className="Card-title">{title}</h6>
                 <p>{companyName}</p>
               

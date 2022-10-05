@@ -46,12 +46,25 @@ function PrivateRoutes({ exact, path, children }) {
   const { currentUser } = useContext(UserContext);
   console.log("Logging currentUser =", currentUser);
 
+
   console.debug(
       "PrivateRoute",
-      "exact=", exact,
-      "path=", path,
+      "exact =", exact,
+      "path =", path,
+      "children =", children,
       "currentUser=", currentUser,
   );
+
+  //further define the exact, path, and children props
+  return (
+    <Route exact={exact} path={path}>
+      {/* {currentUser ? children : <Redirect to="/companies" />}  */}
+      {children}
+    </Route>
+  );
+}
+
+
 
   /* If there's no current user, redirect to /login.
     This is a safe guard that prevents users from accessing routes. 
@@ -62,13 +75,6 @@ function PrivateRoutes({ exact, path, children }) {
   // if (!currentUser) {
   //   return <Redirect to="/login" />;
   // }
-
-  return (
-      <Route exact={exact} path={path}>
-        {children}
-      </Route>
-  );
-}
 
 
 export default PrivateRoutes;

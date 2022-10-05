@@ -33,7 +33,7 @@ function App() {
           // when the current user is identified, set the isLoggedIn state to true
           setIsLoggedIn(true);
         } catch (err) {
-          console.error("App error:", err);
+          console.error(`App error:`, err);
           setCurrentUser(null);
           setIsLoggedIn(false);
         }
