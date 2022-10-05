@@ -5,8 +5,12 @@
 const jsonschema = require("jsonschema");
 const express = require("express");
 
-const { BadRequestError } = require("../expressError");
-const { ensureAdmin } = require("../middleware/auth");
+const {
+  BadRequestError
+} = require("../expressError");
+const {
+  ensureAdmin
+} = require("../middleware/auth");
 const Company = require("../models/company");
 
 const companyNewSchema = require("../schemas/companyNew.json");
@@ -34,7 +38,9 @@ router.post("/", ensureAdmin, async function (req, res, next) {
     }
 
     const company = await Company.create(req.body);
-    return res.status(201).json({ company });
+    return res.status(201).json({
+      company
+    });
   } catch (err) {
     return next(err);
   }
@@ -56,7 +62,7 @@ router.get("/", async function (req, res, next) {
   // arrive as strings from querystring, but we want as ints
   if (q.minEmployees !== undefined) q.minEmployees = +q.minEmployees;
   if (q.maxEmployees !== undefined) q.maxEmployees = +q.maxEmployees;
-
+  console.log(req.body);
   try {
     const validator = jsonschema.validate(q, companySearchSchema);
     if (!validator.valid) {
@@ -65,7 +71,9 @@ router.get("/", async function (req, res, next) {
     }
 
     const companies = await Company.findAll(q);
-    return res.json({ companies });
+    return res.json({
+      companies
+    });
   } catch (err) {
     return next(err);
   }
@@ -82,7 +90,9 @@ router.get("/", async function (req, res, next) {
 router.get("/:handle", async function (req, res, next) {
   try {
     const company = await Company.get(req.params.handle);
-    return res.json({ company });
+    return res.json({
+      company
+    });
   } catch (err) {
     return next(err);
   }
@@ -108,7 +118,9 @@ router.patch("/:handle", ensureAdmin, async function (req, res, next) {
     }
 
     const company = await Company.update(req.params.handle, req.body);
-    return res.json({ company });
+    return res.json({
+      company
+    });
   } catch (err) {
     return next(err);
   }
@@ -122,7 +134,9 @@ router.patch("/:handle", ensureAdmin, async function (req, res, next) {
 router.delete("/:handle", ensureAdmin, async function (req, res, next) {
   try {
     await Company.remove(req.params.handle);
-    return res.json({ deleted: req.params.handle });
+    return res.json({
+      deleted: req.params.handle
+    });
   } catch (err) {
     return next(err);
   }
