@@ -11,17 +11,6 @@ function Homepage() {
   console.debug("Homepage", "currentUser =", currentUser);
   console.debug("Homepage", "message =", Boolean(message), "if true, showing message =", message );
 
-  // useEffect(() => {
-  //   async function getMessage() {
-  //     if (currentUser) {
-  //       setMessage(`Welcome Back, ${currentUser.firstName || currentUser.username}!`);
-  //     } else {
-  //       setMessage('Welcome to Jobly');
-  //     }
-  //   }
-  //   getMessage();
-  // }, [currentUser]);
-
   return (
     <div className="Homepage App-header mt-5">
       <div className="container text-lg-center">
