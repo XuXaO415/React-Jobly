@@ -1,4 +1,4 @@
-## Deployed App [link](Welcome_to_Jobly.surge.sh)
+## Deployed App [link](https://welcome_to_jobly.surge.sh/)
 
 # Getting Started with Create React App
 
