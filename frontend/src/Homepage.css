@@ -1,20 +1,56 @@
-.homepage {
+/* .homepage {
   width: 100%;
   height: 100%;
   display: block;
   position: relative;
+} */
+
+/* .Homepage {
+  
+  min-height: 110vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  background-image: url("https://images.pexels.com/photos/6585012/pexels-photo-6585012.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover;
+} */
+
+.Homepage {
+  background-image: url("https://images.pexels.com/photos/6585012/pexels-photo-6585012.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  height: 100vh;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: sticky;
+  padding-top: 20rem;
 }
 
 .h1-welcome {
-  top: 30%;
+  font-size: 3em;
+  top: 50%;
   font-weight: bold;
-  color: black;
+  text-shadow: black 0.1em 0.1em 0.2em;
+  color: white;
   text-align: center;
 }
 
 .lead-paragraph {
   top: 40%;
   font-size: 1.5em;
-  color: black;
+  text-shadow: black 0.1em 0.1em 0.2em;
+  color: white;
+  text-align: center;
+}
+
+.welcome-msg {
+  font-size: 2em;
+  top: 50%;
+  font-weight: bold;
+  text-shadow: black 0.1em 0.1em 0.2em;
+  color: white;
   text-align: center;
 }
