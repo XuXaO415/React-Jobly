@@ -58,7 +58,12 @@ function App() {
         // localStorage.setItem(newToken); // sets the token in local storage
         setToken(newToken); // sets the token in the state
         // return { success: true, login: true };
-        return { success: true, setIsLoading: true, isLoggedIn: true, login: true };
+        return {
+          success: true,
+          setIsLoading: true,
+          isLoggedIn: true,
+          login: true,
+        };
       } catch (err) {
         return { success: false, login: false, err };
       }
@@ -99,14 +104,14 @@ function App() {
   //   return updateUser();
   // }
 
-async function updateProfile(username, data) {
+  async function updateProfile(username, data) {
     try {
       let user = await JoblyApi.updateUser(username, data);
       setCurrentUser(user);
       return { success: true, update: true };
     } catch (err) {
       return { success: false, update: false, err };
-    } 
+    }
   }
 
   if (isLoading) {
@@ -127,20 +132,20 @@ async function updateProfile(username, data) {
     return searchCompanies();
   }
 
-//check to see if user applied to job
+  //check to see if user applied to job
   function hasAppliedToJob(id) {
     return currentUser.applications.includes(id);
   }
 
   function applyForJob(id) {
     if (hasAppliedToJob(id)) return;
-    try{
+    try {
       JoblyApi.applyForJob(currentUser.username, id);
       setApplicationsIds(new Set([...applicationsIds, id]));
     } catch (err) {
       return { success: false, apply: false, err };
     }
-  } 
+  }
 
   // function searchCompanies(search={}) {
   //   async function searchCompanies() {
@@ -173,21 +178,21 @@ async function updateProfile(username, data) {
   //have links route to the correct components
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ currentUser, setCurrentUser, hasAppliedToJob, applyForJob }}>
-      <div className="App">
-        <Navigation logout={logout} />
-        <Routes
-          login={login}
-          signup={signup}
-          updateProfile={updateProfile}
-          searchCompanies={searchCompanies}
-        />
-      </div>
+      <UserContext.Provider
+        value={{ currentUser, setCurrentUser, hasAppliedToJob, applyForJob }}
+      >
+        <div className="App">
+          <Navigation logout={logout} />
+          <Routes
+            login={login}
+            signup={signup}
+            updateProfile={updateProfile}
+            searchCompanies={searchCompanies}
+          />
+        </div>
       </UserContext.Provider>
     </BrowserRouter>
   );
-  
-
 }
 
 export default App;
